@@ -1,6 +1,7 @@
 ---
 import { Image } from "astro:assets";
 import Logo from "../assets/images/BekuBlueFishLogo.svg"
+
 ---
 
 <header>
@@ -12,6 +13,7 @@ import Logo from "../assets/images/BekuBlueFishLogo.svg"
             <li><a href="#">About</a></li>
         </ul>
     </nav>
+    <p>test</p>
 </header>
 
 <style>
@@ -23,8 +25,14 @@ import Logo from "../assets/images/BekuBlueFishLogo.svg"
         max-width: var(--base-layout-max-width);
         padding-inline: var(--side-gap-padding);
     }
-
     .primary-navigation {
         display: flex;
+        background-color: yellow;
+        transform: rotate(45deg);
+    }
+    @media (--viewport-m) {
+        header {
+            background-color: red;
+        }
     }
 </style>
