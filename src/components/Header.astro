@@ -4,7 +4,21 @@ import Logo from "../assets/images/BekuBlueFishLogo.svg";
 ---
 
 <header>
-    <Image src={Logo} alt="Beku.blue fish logo" height="25" width="25" class="logo"/>
+    <Image
+        src={Logo}
+        alt="Beku.blue fish logo"
+        height="25"
+        width="25"
+        class="logo"
+    />
+    <button
+        aria-controls="primary-navigation"
+        aria-expanded="false"
+        class="menu-toggle-button"
+    >
+        <p class="hamburger-icon">XX</p>
+        <p class="close-icon">XXX</p>
+    </button>
     <nav class="primary-navigation">
         <ul role="list">
             <li><a href="#">Game Reviews</a></li>
@@ -17,11 +31,9 @@ import Logo from "../assets/images/BekuBlueFishLogo.svg";
 <style is:global>
     @import "../styles/media-queries.css";
 
-
     .logo {
         margin-left: 0.25rem;
     }
-
     header {
         display: flex;
         justify-content: space-between;
@@ -35,19 +47,78 @@ import Logo from "../assets/images/BekuBlueFishLogo.svg";
     }
     .primary-navigation ul {
         display: flex;
+        gap: 1rem;
         & li a {
             padding: var(--space-s);
-            color: var(--color-neutral-300);
+            color: var(--color-neutral-500);
             text-decoration: none;
+            transition: var(--transition-normal) color;
+            font-weight: var(--font-weight-semi-bold);
             &:hover,
             &:focus-within {
-                color:  var(--color-accent-100);
-                background-color: var(--color-neutral-700);
+                color: var(--color-accent-200);
             }
         }
     }
+    .menu-toggle-button {
+        display: none;
+    }
+
     @media (--viewport-s) {
-        header {
+        .primary-navigation ul {
+            display: none;
+        }
+        .menu-toggle-button {
+            display: block;
+            position: absolute;
+            z-index: 10;
+            right: 1rem;
+            background-color: transparent;
+            padding: 1rem;
+            border: 0;
+            & .close-icon {
+                display: none;
+            }
+        }
+        [aria-expanded="true"] {
+            .close-icon {
+                display: block;
+            }
+            .hamburger-icon {
+                display: none;
+            }
+        }
+        [aria-expanded="true"] ~ nav {
+            display: block;
+            position: absolute;
+            inset: 0;
+            width: 80%;
+            margin-left: auto;
+            box-shadow: 0 0 0 100vmax hsl(0 0 0 / 0.7);
+            background-color: var(--color-neutral-900);
+            ul {
+                margin-top: 20vh;
+                display: grid;
+                gap: 2rem;
+                margin-left: max(3rem, 20vw);
+            }
         }
     }
 </style>
+
+<script>
+    const navigationToggle = document.querySelector(
+        '[aria-controls="primary-navigation"]'
+    ) as HTMLButtonElement | null;
+
+    if (navigationToggle) {
+        navigationToggle.addEventListener("click", () => {
+            const navigationOpened = navigationToggle.getAttribute("aria-expanded");
+            if (navigationOpened === "false") {
+                navigationToggle.setAttribute("aria-expanded", "true");
+            } else {
+                navigationToggle.setAttribute("aria-expanded", "false");
+            }
+        });
+    }
+</script>
