@@ -1,1 +1,30 @@
-<p>header</p>
+---
+import { Image } from "astro:assets";
+import Logo from "../assets/images/BekuBlueFishLogo.svg"
+---
+
+<header>
+    <Image src={Logo} alt="Beku.blue fish logo" height="30" width="30"/>
+    <nav class="primary-navigation">
+        <ul role="list">
+            <li><a href="#">Game Reviews</a></li>
+            <li><a href="#">Design</a></li>
+            <li><a href="#">About</a></li>
+        </ul>
+    </nav>
+</header>
+
+<style>
+    header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-inline: auto;
+        max-width: var(--base-layout-max-width);
+        padding-inline: var(--side-gap-padding);
+    }
+
+    .primary-navigation {
+        display: flex;
+    }
+</style>
