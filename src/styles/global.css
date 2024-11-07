@@ -1,3 +1,7 @@
+:root {
+	font-size: var(--font-size-base);
+}
+
 body {
 	color: var(--color-neutral-100);
 	background-color: var(--color-neutral-900);
@@ -9,14 +13,20 @@ code {
 	font-family: var(--font-mono);
 }
 
-p, li, details, code {
-	font-size: var(--font-size-base);
+p, li, details, code, a, pre, img {
+	font-size: 1rem;
 }
 
 h1, h2, h3, h4, h5, h6 {
 	line-height: var(--font-line-height-heading);
 }
 
+a {
+	color: var(--color-accent-100);
+}
+a:hover, a:focus-within {
+	color: var(--color-accent-500);
+}
 
 h1 {font-size: var(--text-size-4xl);}
 h2 {font-size: var(--text-size-3xl);}

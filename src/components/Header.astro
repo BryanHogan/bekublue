@@ -1,11 +1,10 @@
 ---
 import { Image } from "astro:assets";
-import Logo from "../assets/images/BekuBlueFishLogo.svg"
-
+import Logo from "../assets/images/BekuBlueFishLogo.svg";
 ---
 
 <header>
-    <Image src={Logo} alt="Beku.blue fish logo" height="30" width="30"/>
+    <Image src={Logo} alt="Beku.blue fish logo" height="25" width="25" class="logo"/>
     <nav class="primary-navigation">
         <ul role="list">
             <li><a href="#">Game Reviews</a></li>
@@ -13,10 +12,16 @@ import Logo from "../assets/images/BekuBlueFishLogo.svg"
             <li><a href="#">About</a></li>
         </ul>
     </nav>
-    <p>test</p>
 </header>
 
-<style>
+<style is:global>
+    @import "../styles/media-queries.css";
+
+
+    .logo {
+        margin-left: 0.25rem;
+    }
+
     header {
         display: flex;
         justify-content: space-between;
@@ -24,15 +29,25 @@ import Logo from "../assets/images/BekuBlueFishLogo.svg"
         margin-inline: auto;
         max-width: var(--base-layout-max-width);
         padding-inline: var(--side-gap-padding);
+        padding-block: var(--space-xs);
+        height: 50px;
+        border: 1px solid red;
     }
-    .primary-navigation {
+    .primary-navigation ul {
         display: flex;
-        background-color: yellow;
-        transform: rotate(45deg);
+        & li a {
+            padding: var(--space-s);
+            color: var(--color-neutral-300);
+            text-decoration: none;
+            &:hover,
+            &:focus-within {
+                color:  var(--color-accent-100);
+                background-color: var(--color-neutral-700);
+            }
+        }
     }
-    @media (--viewport-m) {
+    @media (--viewport-s) {
         header {
-            background-color: red;
         }
     }
 </style>

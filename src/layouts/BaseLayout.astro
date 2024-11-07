@@ -3,10 +3,10 @@ import "../styles/reset.css";
 import "../styles/var.css";
 import "../styles/global.css";
 import "../styles/util.css";
+
 import Header from "../components/Header.astro";
 import Footer from "../components/Footer.astro";
 import { ViewTransitions } from "astro:transitions";
-
 
 interface Props {
     title: string;
@@ -70,5 +70,4 @@ if (canonicalURL.pathname.endsWith('/')) {
 </html>
 
 <style is:global>
-@custom-media --viewport-m (min-width: 20px);
 </style>
