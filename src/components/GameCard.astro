@@ -3,30 +3,55 @@ interface Props {
     title: string;
     description: string;
     link: string;
+    cover: any;
+    coverAlt: string;
 }
-const { title, description, link } = Astro.props;
+const { title, description, link, cover, coverAlt } = Astro.props;
 
 import { Image } from "astro:assets";
 import Terraria from "../assets/images/game-headers/Terraria-Header.jpg";
 ---
 
 <article>
-    <a href="#">
-        <Image src={Terraria} alt="Terraria game header" class="game-header" />
-        <h3>{title}</h3>
-        <p>{description}</p>
+    <a href={link}>
+        <Image src={cover} alt={coverAlt} class="game-header" />
+        <div class="text-group">
+            <h3>{title}</h3>
+            <p>{description}</p>
+        </div>
     </a>
 </article>
 
 <style>
-    a, a * {
+    a,
+    a * {
         text-decoration: none;
         color: inherit;
+        transition: var(--transition-normal) opacity;
     }
 
     article {
-        background-color: var(--color-neutral-800);
         border-radius: var(--border-radius-m);
+        border: 1px solid var(--color-neutral-300);
         max-width: max-content;
+
+        & img {
+            overflow: hidden;
+            border-radius: var(--border-radius-m) var(--border-radius-m) 0 0;
+            object-fit: cover;
+        }
+        & a:hover,a:focus-within {
+            opacity: 0.9;
+            
+        }
+    }
+    .text-group {
+        padding: var(--space-s);
+        & h3 {
+            padding-bottom: 0.125em;
+        }
+        & p {
+            color: var(--color-neutral-200);
+        }
     }
 </style>

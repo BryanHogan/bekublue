@@ -5,6 +5,17 @@ import CultOfTheLamb from "../assets/images/game-headers/Cult-Of-The-Lamb-Header
 import Terraria from "../assets/images/game-headers/Terraria-Header.jpg";
 import DomeKeeper from "../assets/images/game-headers/Dome-Keeper-Header.jpg";
 import GameCard from "../components/GameCard.astro";
+
+import { getEntry, getEntries, getCollection } from "astro:content";
+const featuredArticle = (await getEntry("reviews", "terraria")) ?? {
+	data: {
+		title: "Article Not Found",
+	},
+};
+const allEntriesReviews = (await getCollection("reviews")).sort(
+	(a, b) => b.data.pubDate.getTime() - a.data.pubDate.getTime(),
+);
+const bestRatedReviews = 5;
 ---
 
 <BaseLayout
@@ -15,20 +26,33 @@ import GameCard from "../components/GameCard.astro";
 		<div class="main-content-container">
 			<h1 class="visually-hidden">Beku.blue game review articles</h1>
 			<article class="featured-article">
-				<Image src={CultOfTheLamb} alt="Cult of the lamb game header" class="game-header"/>
+				<Image
+					src={CultOfTheLamb}
+					alt="Cult of the lamb game header"
+					class="game-header"
+				/>
 				<div class="flow">
-					<h2>Cult of the Lamb</h2>
-					<p>How good is this cute cult growing hit?</p>
+					<h2>{featuredArticle.data.title}</h2>
+					<p>{featuredArticle.data.description}</p>
 					<a href="#">Read more</a>
 				</div>
 			</article>
 			<h2>Latest Reviews</h2>
-			<GameCard title="Terraria" description="Terria is the best 2d sandox for more than a decade?" link="/terraria"/>
-			<article>
-				<Image src={DomeKeeper} alt="Dome Keeper game header" class="game-header"/>
-				<h3>Dome Keeper</h3>
-				<p>Protect yourself. Part of the humble bundle.</p>
-			</article>
+			<ul role="list">
+				{
+					allEntriesReviews.map((post, index) => (
+						<li>
+							<GameCard
+								title={post.data.title}
+								description={post.data.description}
+								link={`/games/${post.slug}`}
+								cover={post.data.cover}
+								coverAlt={post.data.coverAlt}
+							/>
+						</li>
+					))
+				}
+			</ul>
 		</div>
 	</main>
 </BaseLayout>
