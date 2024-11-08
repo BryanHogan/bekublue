@@ -1,7 +1,15 @@
 ---
-import type { getCollection, CollectionEntry } from 'astro:content';
+import type { getCollection, CollectionEntry } from "astro:content";
+import BaseLayout from "../layouts/BaseLayout.astro";
 
 interface Props {
 	post: CollectionEntry<"reviews"> | CollectionEntry<"posts">;
 }
+const { post } = Astro.props;
 ---
+
+<BaseLayout title={post.data.title} description={post.data.description}>
+	<article>
+		<slot />
+	</article>
+</BaseLayout>

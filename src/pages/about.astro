@@ -1,0 +1,25 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+---
+
+<BaseLayout title="404 - Not Found" description="Error 404 - site not found.">
+    <main class="height-smart-fill-screen">
+        <div class="text-group flow">
+        <h1>About</h1>
+        <p>Beku.blue is a place to find the best games for you.</p>
+        <p>Good game design is hard.</p>
+    </div>
+    </main>
+</BaseLayout>
+
+<style>
+    main {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+    .text-group * {
+        margin-inline: auto;
+        text-align: center;
+    }
+</style>
