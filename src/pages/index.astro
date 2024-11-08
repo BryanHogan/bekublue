@@ -1,18 +1,46 @@
 ---
 import BaseLayout from "../layouts/BaseLayout.astro";
+import { Image } from "astro:assets";
+import CultOfTheLamb from "../assets/images/game-headers/Cult-Of-The-Lamb-Header.jpg";
 ---
 
 <BaseLayout
 	title="All about Games | Beku.blue"
 	description="All about games. Finding high quality video games for you."
 >
-	<div>
-		<h1>Hi there</h1>
-		<p>Now it is time to build!</p>
-		<h2>Featured Article</h2>
-		<h2>Latest Articles</h2>
-	</div>
+	<main class="base-layout">
+		<div class="main-content-container">
+			<h1 class="visually-hidden">Beku.blue game review articles</h1>
+			<article class="featured-article">
+				<Image src={CultOfTheLamb} alt="Cult of the lamb game header" class="game-header"/>
+				<div class="flow">
+					<h2>Cult of the Lamb</h2>
+					<p>How good is this cute cult growing hit?</p>
+					<a href="#">Read more</a>
+				</div>
+			</article>
+			<h2>Latest Articles</h2>
+		</div>
+	</main>
 </BaseLayout>
 
 <style>
+	@import "../styles/media-queries.css";
+
+	.main-content-container {
+	}
+
+	.featured-article {
+		display: flex;
+		flex-wrap: wrap;
+	}
+	.game-header {
+		object-fit: cover;
+	}
+
+	@media (--viewport-s) {
+		.featured-article {
+			/*flex-direction: column-reverse;*/
+		}
+	}
 </style>
