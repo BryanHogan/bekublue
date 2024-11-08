@@ -9,7 +9,7 @@ const { post } = Astro.props;
 ---
 
 <BaseLayout title={post.data.title} description={post.data.description}>
-	<article>
+	<main class="height-smart-fill-screen">
 		<slot />
-	</article>
+	</main>
 </BaseLayout>

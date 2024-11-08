@@ -4,13 +4,15 @@ import Logo from "../assets/images/BekuBlueFishLogo.svg";
 ---
 
 <header>
-    <Image
-        src={Logo}
-        alt="Beku.blue fish logo"
-        height="25"
-        width="25"
-        class="logo"
-    />
+    <a href="/"
+        ><Image
+            src={Logo}
+            alt="Beku.blue fish logo"
+            height="25"
+            width="25"
+            class="logo"
+        /></a
+    >
     <button
         aria-controls="primary-navigation"
         aria-expanded="false"
@@ -23,7 +25,7 @@ import Logo from "../assets/images/BekuBlueFishLogo.svg";
         <ul role="list">
             <li><a href="#">Game Reviews</a></li>
             <li><a href="#">Design</a></li>
-            <li><a href="#">About</a></li>
+            <li><a href="/about">About</a></li>
         </ul>
     </nav>
 </header>
@@ -35,7 +37,7 @@ import Logo from "../assets/images/BekuBlueFishLogo.svg";
     - Font weight of a
     - Color of a
     - Color of a hover
-    */ 
+    */
 
     .logo {
         margin-left: 0.25rem;
@@ -113,18 +115,24 @@ import Logo from "../assets/images/BekuBlueFishLogo.svg";
 </style>
 
 <script>
-    const navigationToggle = document.querySelector(
-        '[aria-controls="primary-navigation"]'
-    ) as HTMLButtonElement | null;
+    function setupNavigation() {
+        const navigationToggle = document.querySelector(
+            '[aria-controls="primary-navigation"]'
+        ) as HTMLButtonElement | null;
 
-    if (navigationToggle) {
-        navigationToggle.addEventListener("click", () => {
-            const navigationOpened = navigationToggle.getAttribute("aria-expanded");
-            if (navigationOpened === "false") {
-                navigationToggle.setAttribute("aria-expanded", "true");
-            } else {
-                navigationToggle.setAttribute("aria-expanded", "false");
-            }
-        });
+        if (navigationToggle) {
+            navigationToggle.addEventListener("click", () => {
+                const navigationOpened = navigationToggle.getAttribute("aria-expanded");
+                if (navigationOpened === "false") {
+                    navigationToggle.setAttribute("aria-expanded", "true");
+                } else {
+                    navigationToggle.setAttribute("aria-expanded", "false");
+                }
+            });
+        }
     }
+
+    setupNavigation();
+
+    document.addEventListener('astro:page-load', setupNavigation);
 </script>
