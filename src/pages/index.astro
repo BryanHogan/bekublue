@@ -43,7 +43,7 @@ const bestRatedReviews = [...allEntriesReviews].sort(
 				</div>
 			</article>
 			<h2>Latest Reviews</h2>
-			<ul role="list">
+			<ul class="article-container" role="list">
 				{
 					chronologicallySortedReviews.slice(0, 2).map((post) => (
 						<li>
@@ -54,13 +54,12 @@ const bestRatedReviews = [...allEntriesReviews].sort(
 								cover={post.data.cover}
 								coverAlt={post.data.coverAlt}
 							/>
-							<p>{post.data.pubDate}</p>
 						</li>
 					))
 				}
 			</ul>
 			<h2>Best Rated</h2>
-			<ul role="list">
+			<ul class="article-container" role="list">
 				{
 					bestRatedReviews.slice(0, 2).map((post) => (
 						<li>
@@ -99,6 +98,9 @@ const bestRatedReviews = [...allEntriesReviews].sort(
 	@import "../styles/media-queries.css";
 
 	.main-content-container {
+		h2 {
+			padding-bottom: var(--space-m);
+		}
 	}
 
 	.featured-article {
@@ -107,6 +109,13 @@ const bestRatedReviews = [...allEntriesReviews].sort(
 	}
 	.game-header {
 		object-fit: cover;
+	}
+
+	.article-container {
+		display: flex;
+		flex-wrap: wrap;
+		gap: var(--space-m);
+		padding-bottom: var(--space-xl)
 	}
 
 	@media (--viewport-s) {
