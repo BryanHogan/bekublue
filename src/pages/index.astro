@@ -12,10 +12,13 @@ const featuredArticle = (await getEntry("reviews", "terraria")) ?? {
 		title: "Article Not Found",
 	},
 };
-const allEntriesReviews = (await getCollection("reviews")).sort(
+const allEntriesReviews = await getCollection("reviews");
+const chronologicallySortedReviews = [...allEntriesReviews].sort(
 	(a, b) => b.data.pubDate.getTime() - a.data.pubDate.getTime(),
 );
-const bestRatedReviews = 5;
+const bestRatedReviews = [...allEntriesReviews].sort(
+	(a, b) => b.data.rating - a.data.rating,
+);
 ---
 
 <BaseLayout
@@ -40,7 +43,40 @@ const bestRatedReviews = 5;
 			<h2>Latest Reviews</h2>
 			<ul role="list">
 				{
-					allEntriesReviews.map((post, index) => (
+					chronologicallySortedReviews.slice(0, 2).map((post) => (
+						<li>
+							<GameCard
+								title={post.data.title}
+								description={post.data.description}
+								link={`/games/${post.slug}`}
+								cover={post.data.cover}
+								coverAlt={post.data.coverAlt}
+							/>
+							<p>{post.data.pubDate}</p>
+						</li>
+					))
+				}
+			</ul>
+			<h2>Best Rated</h2>
+			<ul role="list">
+				{
+					bestRatedReviews.slice(0, 2).map((post) => (
+						<li>
+							<GameCard
+								title={post.data.title}
+								description={post.data.description}
+								link={`/games/${post.slug}`}
+								cover={post.data.cover}
+								coverAlt={post.data.coverAlt}
+							/>
+						</li>
+					))
+				}
+			</ul>
+			<h2>Latest Blog Posts</h2>
+			<ul role="list">
+				{
+					bestRatedReviews.slice(0, 2).map((post) => (
 						<li>
 							<GameCard
 								title={post.data.title}
