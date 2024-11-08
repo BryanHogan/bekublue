@@ -1,0 +1,32 @@
+---
+interface Props {
+    title: string;
+    description: string;
+    link: string;
+}
+const { title, description, link } = Astro.props;
+
+import { Image } from "astro:assets";
+import Terraria from "../assets/images/game-headers/Terraria-Header.jpg";
+---
+
+<article>
+    <a href="#">
+        <Image src={Terraria} alt="Terraria game header" class="game-header" />
+        <h3>{title}</h3>
+        <p>{description}</p>
+    </a>
+</article>
+
+<style>
+    a, a * {
+        text-decoration: none;
+        color: inherit;
+    }
+
+    article {
+        background-color: var(--color-neutral-800);
+        border-radius: var(--border-radius-m);
+        max-width: max-content;
+    }
+</style>

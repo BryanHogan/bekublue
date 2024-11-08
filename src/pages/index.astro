@@ -2,6 +2,9 @@
 import BaseLayout from "../layouts/BaseLayout.astro";
 import { Image } from "astro:assets";
 import CultOfTheLamb from "../assets/images/game-headers/Cult-Of-The-Lamb-Header.jpg";
+import Terraria from "../assets/images/game-headers/Terraria-Header.jpg";
+import DomeKeeper from "../assets/images/game-headers/Dome-Keeper-Header.jpg";
+import GameCard from "../components/GameCard.astro";
 ---
 
 <BaseLayout
@@ -19,7 +22,13 @@ import CultOfTheLamb from "../assets/images/game-headers/Cult-Of-The-Lamb-Header
 					<a href="#">Read more</a>
 				</div>
 			</article>
-			<h2>Latest Articles</h2>
+			<h2>Latest Reviews</h2>
+			<GameCard title="Terraria" description="Terria is the best 2d sandox for more than a decade?" link="/terraria"/>
+			<article>
+				<Image src={DomeKeeper} alt="Dome Keeper game header" class="game-header"/>
+				<h3>Dome Keeper</h3>
+				<p>Protect yourself. Part of the humble bundle.</p>
+			</article>
 		</div>
 	</main>
 </BaseLayout>
