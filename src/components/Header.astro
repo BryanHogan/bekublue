@@ -13,7 +13,8 @@ import Logo from "../assets/images/BekuBlueFishLogo.svg";
                     height="25"
                     width="25"
                     class="logo"
-                /></a>
+                /></a
+            >
             <button
                 aria-controls="primary-navigation"
                 aria-expanded="false"
@@ -41,6 +42,8 @@ import Logo from "../assets/images/BekuBlueFishLogo.svg";
     - Font weight of a
     - Color of a
     - Color of a hover
+
+    This is being used globally, make sure I use specific styling
     */
 
     .logo {
@@ -48,14 +51,30 @@ import Logo from "../assets/images/BekuBlueFishLogo.svg";
     }
     .backdrop-area {
         width: 100%;
-        height: var(--navbar-height)
+        height: var(--navbar-height);
     }
     .header-container {
         width: 100%;
         position: fixed;
-        background-color: blue;
         z-index: 10;
+        background-color: var(--color-neutral-900);
+        background-color: color-mix(
+            in srgb,
+            var(--color-neutral-900) 97%,
+            transparent
+        );
     }
+    .header-container::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        backdrop-filter: blur(5px);
+        z-index: -1;
+    }
+
     header {
         display: flex;
         justify-content: space-between;
@@ -65,7 +84,6 @@ import Logo from "../assets/images/BekuBlueFishLogo.svg";
         padding-inline: var(--side-gap-padding);
         padding-block: var(--space-xs);
         height: var(--navbar-height);
-        border: 1px solid red;
     }
     .primary-navigation ul {
         display: flex;
@@ -136,7 +154,9 @@ import Logo from "../assets/images/BekuBlueFishLogo.svg";
         const navigationToggle = document.querySelector(
             '[aria-controls="primary-navigation"]',
         ) as HTMLButtonElement | null;
-        const navigation = document.querySelector('.primary-navigation') as HTMLElement | null;
+        const navigation = document.querySelector(
+            ".primary-navigation",
+        ) as HTMLElement | null;
 
         if (!navigationToggle || !navigation) return;
 
@@ -147,7 +167,8 @@ import Logo from "../assets/images/BekuBlueFishLogo.svg";
 
         const toggleMenu = (event: Event) => {
             event.stopPropagation();
-            const navigationOpened = navigationToggle.getAttribute("aria-expanded");
+            const navigationOpened =
+                navigationToggle.getAttribute("aria-expanded");
             navigationToggle.setAttribute(
                 "aria-expanded",
                 navigationOpened === "false" ? "true" : "false",
