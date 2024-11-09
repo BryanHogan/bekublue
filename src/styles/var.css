@@ -92,7 +92,7 @@
     /* If using PostCSS (Or SASS or SCSS) */
 
     /* Other */
-    --navbar-height: 3.5rem;
+    --navbar-height: 3rem;
     --footer-height: 8rem;
     --side-gap-padding: var(--space-s);
 

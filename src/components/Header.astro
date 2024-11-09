@@ -3,33 +3,36 @@ import { Image } from "astro:assets";
 import Logo from "../assets/images/BekuBlueFishLogo.svg";
 ---
 
-<header>
-    <a href="/"
-        ><Image
-            src={Logo}
-            alt="Beku.blue fish logo"
-            height="25"
-            width="25"
-            class="logo"
-        /></a
-    >
-    <button
-        aria-controls="primary-navigation"
-        aria-expanded="false"
-        class="menu-toggle-button"
-    >
-        <p class="hamburger-icon">XX</p>
-        <p class="close-icon">XXX</p>
-    </button>
-    <nav class="primary-navigation">
-        <ul role="list">
-            <li><a href="#">Game Reviews</a></li>
-            <li><a href="/about">Blog</a></li>
-            <!--<li><a href="#">Design</a></li>-->
-            <li><a href="/about">About</a></li>
-        </ul>
-    </nav>
-</header>
+<div class="backdrop-area">
+    <div class="header-container">
+        <header>
+            <a href="/"
+                ><Image
+                    src={Logo}
+                    alt="Beku.blue fish logo"
+                    height="25"
+                    width="25"
+                    class="logo"
+                /></a>
+            <button
+                aria-controls="primary-navigation"
+                aria-expanded="false"
+                class="menu-toggle-button"
+            >
+                <p class="hamburger-icon">XX</p>
+                <p class="close-icon">XXX</p>
+            </button>
+            <nav class="primary-navigation">
+                <ul role="list">
+                    <li><a href="#">Game Reviews</a></li>
+                    <li><a href="/about">Blog</a></li>
+                    <!--<li><a href="#">Design</a></li>-->
+                    <li><a href="/about">About</a></li>
+                </ul>
+            </nav>
+        </header>
+    </div>
+</div>
 
 <style is:global>
     @import "../styles/media-queries.css";
@@ -43,6 +46,16 @@ import Logo from "../assets/images/BekuBlueFishLogo.svg";
     .logo {
         margin-left: 0.25rem;
     }
+    .backdrop-area {
+        width: 100%;
+        height: var(--navbar-height)
+    }
+    .header-container {
+        width: 100%;
+        position: fixed;
+        background-color: blue;
+        z-index: 10;
+    }
     header {
         display: flex;
         justify-content: space-between;
@@ -51,7 +64,7 @@ import Logo from "../assets/images/BekuBlueFishLogo.svg";
         max-width: var(--base-layout-max-width);
         padding-inline: var(--side-gap-padding);
         padding-block: var(--space-xs);
-        height: 50px;
+        height: var(--navbar-height);
         border: 1px solid red;
     }
     .primary-navigation ul {
@@ -80,7 +93,7 @@ import Logo from "../assets/images/BekuBlueFishLogo.svg";
         .menu-toggle-button {
             display: block;
             position: absolute;
-            z-index: 10;
+            z-index: 30;
             right: 1rem;
             background-color: transparent;
             padding: 1rem;
@@ -99,12 +112,15 @@ import Logo from "../assets/images/BekuBlueFishLogo.svg";
         }
         [aria-expanded="true"] ~ nav {
             display: block;
-            position: absolute;
-            inset: 0;
+            position: fixed;
+            top: 0;
+            right: 0;
+            bottom: 0;
             width: 80%;
             margin-left: auto;
             box-shadow: 0 0 0 100vmax hsl(0 0 0 / 0.7);
             background-color: var(--color-neutral-900);
+            z-index: 20;
             ul {
                 margin-top: 20vh;
                 display: grid;
@@ -118,22 +134,34 @@ import Logo from "../assets/images/BekuBlueFishLogo.svg";
 <script>
     function setupNavigation() {
         const navigationToggle = document.querySelector(
-            '[aria-controls="primary-navigation"]'
+            '[aria-controls="primary-navigation"]',
         ) as HTMLButtonElement | null;
+        const navigation = document.querySelector('.primary-navigation') as HTMLElement | null;
 
-        if (navigationToggle) {
-            navigationToggle.addEventListener("click", () => {
-                const navigationOpened = navigationToggle.getAttribute("aria-expanded");
-                if (navigationOpened === "false") {
-                    navigationToggle.setAttribute("aria-expanded", "true");
-                } else {
-                    navigationToggle.setAttribute("aria-expanded", "false");
-                }
-            });
-        }
+        if (!navigationToggle || !navigation) return;
+
+        const closeMenu = (event: Event) => {
+            if (navigation.contains(event.target as Node)) return;
+            navigationToggle.setAttribute("aria-expanded", "false");
+        };
+
+        const toggleMenu = (event: Event) => {
+            event.stopPropagation();
+            const navigationOpened = navigationToggle.getAttribute("aria-expanded");
+            navigationToggle.setAttribute(
+                "aria-expanded",
+                navigationOpened === "false" ? "true" : "false",
+            );
+        };
+
+        navigationToggle.removeEventListener("click", toggleMenu);
+        document.removeEventListener("click", closeMenu);
+
+        navigationToggle.addEventListener("click", toggleMenu);
+        document.addEventListener("click", closeMenu);
     }
 
     setupNavigation();
 
-    document.addEventListener('astro:page-load', setupNavigation);
+    document.addEventListener("astro:after-swap", setupNavigation);
 </script>
