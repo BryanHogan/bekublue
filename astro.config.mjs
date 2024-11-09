@@ -9,4 +9,7 @@ export default defineConfig({
 	site: 'https://beku.blue',
 	trailingSlash: 'never',
 	integrations: [mdx(), sitemap()],
+	server: {
+		host: true
+	  }
 });
