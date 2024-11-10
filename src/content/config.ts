@@ -14,6 +14,14 @@ const reviewCollection = defineCollection({
                 message: "Cover image must be at least 200 pixel high!",
             }),
         coverAlt: z.string(),
+        hero: image()
+            .refine((img) => img.width > 350, {
+                message: "Hero image must be at least 350 pixel wide!",
+            })
+            .refine((img) => img.height > 200, {
+                message: "Hero image must be at least 200 pixel high!",
+            }),
+        heroAlt: z.string(),
         pubDate: z.date(),
         tags: z.array(z.string()),
         rating: z.number().max(5, "Max rating is 5.").min(0, "Minimum rating is 0"),

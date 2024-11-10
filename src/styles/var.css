@@ -1,8 +1,8 @@
 :root {
     /* Color */
     --color-neutral-900: #131210;
-    --color-neutral-800: #252422;
-    --color-neutral-700: #464644;
+    --color-neutral-800: #1b1b1a;
+    --color-neutral-700: #30302e;
     --color-neutral-600: #666665;
     --color-neutral-500: #858585;
     --color-neutral-400: #A5A6A5;
@@ -31,7 +31,7 @@
     --font-size-small: 0.875rem;
     --font-size-base: 16px;
     /* or 18px*/
-    --font-size-large: 1.25rem;
+    --font-size-large: 1.125rem;
 
 
     --text-size-6xl: 4rem;

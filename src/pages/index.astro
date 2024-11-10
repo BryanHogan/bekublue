@@ -1,9 +1,7 @@
 ---
 import BaseLayout from "../layouts/BaseLayout.astro";
 import { Image } from "astro:assets";
-import CultOfTheLamb from "../assets/images/game-headers/Cult-Of-The-Lamb-Header.jpg";
-import Terraria from "../assets/images/game-headers/Terraria-Header.jpg";
-import DomeKeeper from "../assets/images/game-headers/Dome-Keeper-Header.jpg";
+import CultOfTheLamb from "../assets/images/games/Cult-Of-The-Lamb-Header.jpg";
 import GameCard from "../components/GameCard.astro";
 
 import { getEntry, getEntries, getCollection } from "astro:content";
@@ -30,18 +28,26 @@ const bestRatedReviews = [...allEntriesReviews].sort(
 	<main class="base-layout">
 		<div class="all-content-container">
 			<div class="main-content-container">
-				<h1 class="visually-hidden">Beku.blue game review articles</h1>
+				<h1 class="visually-hidden">
+					Beku.blue game reviews and blog posts
+				</h1>
 				<article class="featured-article">
+					<div class="hero-container">
+						<Image
+							src={featuredArticle.data.hero}
+							alt="Cult of the lamb game hero"
+							class="game-hero"
+						/>
+					</div>
 					<Image
-						src={CultOfTheLamb}
+						src={featuredArticle.data.cover}
 						alt="Cult of the lamb game header"
 						class="game-header"
 					/>
-					<div class="flow">
-						<h2>{featuredArticle.data.title}</h2>
-						<p>{featuredArticle.data.description}</p>
-						<a href="#">Read more</a>
-					</div>
+					<h2 class="visually-hidden">Featured Article</h2>
+					<h3>{featuredArticle.data.title}</h3>
+					<p>{featuredArticle.data.description}</p>
+					<AButton title="Read more" href="" />
 				</article>
 				<h2>Latest Reviews</h2>
 				<ul class="article-container" role="list">
@@ -124,31 +130,32 @@ const bestRatedReviews = [...allEntriesReviews].sort(
 						>
 					</li>
 				</ul>
-				<h2>Tags</h2>
-				<ul role="list">
-					<li><a href="#">Hidden Gems</a></li>
-					<li><a href="#">Yearly Highlights</a></li>
-					<li><a href="#">Pokemon-likes</a></li>
-					<li><a href="#">Godot</a></li>
-					<li><a href="#"></a></li>
-				</ul>
 			</div>
-			<aside>
-				<h2 class="visually-hidden">Latest Changes</h2>
-				<h3 style="margin-top: var(--space-2xl);">Game Reviews</h3>
-				<ul role="list" class="navigation-container">
-					<li><AButton title="Latest reviews" href="#"/></li>
-					
-					<li><p>Best rated</p></li>
-					<li><p>Best rated</p></li>
-				</ul>
-				<h3>Blog</h3>
-				<p style="color: var(--color-accent-500);">Blog</p>
-				<ul>
-					<li><p>Game Design</p></li>
-					<li><p>Best rated</p></li>
-					<li><p>Best rated</p></li>
-				</ul>
+			<aside class="aside-container">
+				<nav class="aside-navigation-container">
+					<h2 class="text-align-center">Navigation</h2>
+					<div class="flex-center flex-column">
+						<h3>Game Reviews</h3>
+						<ul role="list" class="flex-center">
+							<li><AButton title="Latest reviews" href="#" /></li>
+							<li><AButton title="Best rated" href="#" /></li>
+						</ul>
+					</div>
+					<div class="flex-center flex-column">
+						<h3>Blog</h3>
+						<ul role="list" class="flex-center">
+							<li><AButton title="Latest posts" href="#" /></li>
+							<li><AButton title="Game design" href="#" /></li>
+						</ul>
+					</div>
+					<div class="flex-center flex-column">
+						<h3>More</h3>
+						<ul role="list" class="flex-center">
+							<li><AButton title="Hidden gems" href="#" /></li>
+							<li><AButton title="Pokemon-likes" href="#" /></li>
+						</ul>
+					</div>
+				</nav>
 			</aside>
 		</div>
 	</main>
@@ -158,25 +165,41 @@ const bestRatedReviews = [...allEntriesReviews].sort(
 
 		.all-content-container {
 			display: flex;
-			flex-direction: row;
-			flex-wrap: wrap;
-			border: 1px solid blue;
+			flex-direction: column;
+			justify-content: space-between;
 			gap: var(--space-xl);
 		}
 		.main-content-container {
 			max-width: 950px;
-			border: 1px solid green;
+			margin-inline: auto;
 			h2 {
 				padding-bottom: var(--space-m);
 			}
 		}
 
 		.featured-article {
-			display: flex;
-			flex-wrap: wrap;
+			position: relative;
+			z-index: 2;
+			.hero-container {
+				position: absolute;
+				width: 100%;
+				height: 280px;
+				z-index: 3;
+				overflow: hidden;
+			}
+			.game-hero {
+				height: 280px;
+			}
+			.game-header {
+				z-index: 4;
+				position: absolute;
+				top: 200px;
+				
+			}
 		}
-		.game-header {
+		.game-hero {
 			object-fit: cover;
+			max-height: 280px;
 		}
 
 		.article-container {
@@ -220,10 +243,44 @@ const bestRatedReviews = [...allEntriesReviews].sort(
 				grid-template-columns: 1fr;
 			}
 		}
+		@media only screen and (min-width: 1300px) {
+			.all-content-container {
+				flex-direction: row;
+			}
+			.aside-navigation-container {
+				width: 100%;
+				margin-top: var(--space-2xl);
+				div ul {
+					flex-direction: column;
+				}
+			}
+		}
 
-		.navigation-container {
-			display: flex;
-			flex-direction: column;
+		.aside-container {
+			margin-inline: auto;
+			height: fit-content;
+		}
+		.aside-navigation-container {
+			background-color: var(--color-neutral-800);
+			padding: var(--space-l) var(--space-xl);
+			border-radius: var(--border-radius-m);
+			h2 {
+				font-size: var(--font-size-large);
+				padding-bottom: var(--space-s);
+				margin-bottom: var(--space-l);
+				border-bottom: 1px solid var(--color-neutral-600);
+			}
+			h3 {
+				padding-bottom: var(--space-m);
+				font-size: var(--text-size-2xl);
+				color: var(--color-accent-300);
+			}
+			div:not(:first-of-type) {
+				margin-top: var(--space-l);
+			}
+		}
+		.aside-navigation-container div ul {
+			gap: var(--space-s);
 		}
 	</style>
 </BaseLayout>

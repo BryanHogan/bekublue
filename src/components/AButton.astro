@@ -8,23 +8,25 @@ interface Props {
 const { title, href = "#", size } = Astro.props;
 ---
 
-<div>
-    <a href={href}>
+<a href={href}>
+    <div>
         <p>{title}</p>
-    </a>
-</div>
+    </div>
+</a>
 
 <style define:vars={{ "button-size": size }}>
     div {
-        padding: var(--space-m);
+        padding: 0.75rem;
         border: 1px solid var(--color-neutral-500);
-        border-radius: var(--border-radius-m);
-        
+        width: fit-content;
     }
     a {
         text-decoration: none;
     }
     a:hover,
     a:focus-within {
+    }
+    a div p {
+        font-size: var(--font-size-large);
     }
 </style>
