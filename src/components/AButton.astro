@@ -3,12 +3,13 @@ interface Props {
     title: string;
     href: string;
     size?: string;
+    inlineAuto?: boolean;
 }
 
-const { title, href = "#", size } = Astro.props;
+const { title, href = "#", size, inlineAuto = false } = Astro.props;
 ---
 
-<a href={href}>
+<a href={href} class={inlineAuto ? 'center' : ''}>
     <div>
         <p>{title}</p>
     </div>
@@ -18,10 +19,14 @@ const { title, href = "#", size } = Astro.props;
     div {
         padding: 0.75rem;
         border: 1px solid var(--color-neutral-500);
-        width: fit-content;
     }
     a {
         text-decoration: none;
+        display: block;
+        width: fit-content;
+    }
+    a.center {
+        margin-inline: auto;
     }
     a:hover,
     a:focus-within {

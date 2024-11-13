@@ -32,22 +32,30 @@ const bestRatedReviews = [...allEntriesReviews].sort(
 					Beku.blue game reviews and blog posts
 				</h1>
 				<article class="featured-article">
-					<div class="hero-container">
-						<Image
-							src={featuredArticle.data.hero}
-							alt="Cult of the lamb game hero"
-							class="game-hero"
-						/>
-					</div>
 					<Image
-						src={featuredArticle.data.cover}
-						alt="Cult of the lamb game header"
-						class="game-header"
+						src={featuredArticle.data.hero}
+						alt={featuredArticle.data.heroAlt}
+						class="game-hero"
 					/>
-					<h2 class="visually-hidden">Featured Article</h2>
-					<h3>{featuredArticle.data.title}</h3>
-					<p>{featuredArticle.data.description}</p>
-					<AButton title="Read more" href="" />
+					<div class="featured-article-main-content">
+						<div class="featured-article-header-container">
+							<Image
+								src={featuredArticle.data.cover}
+								alt={featuredArticle.data.coverAlt}
+								class="game-header"
+							/>
+						</div>
+						<div class="featured-article-text">
+							<h2 class="">Featured Article</h2>
+							<h3>{featuredArticle.data.title}</h3>
+							<p>{featuredArticle.data.description}</p>
+							<AButton
+								title="Read more"
+								href="#"
+								inlineAuto={true}
+							/>
+						</div>
+					</div>
 				</article>
 				<h2>Latest Reviews</h2>
 				<ul class="article-container" role="list">
@@ -178,28 +186,52 @@ const bestRatedReviews = [...allEntriesReviews].sort(
 		}
 
 		.featured-article {
-			position: relative;
-			z-index: 2;
-			.hero-container {
-				position: absolute;
-				width: 100%;
-				height: 280px;
-				z-index: 3;
-				overflow: hidden;
+			--_yoffset: -38px;
+
+			padding-bottom: var(--space-l);
+			margin-bottom: var(--space-xl);
+			border-radius: var(--border-radius-m);
+			background-color: var(--color-neutral-800);
+			h2 {
+				padding-bottom: var(--space-s);
+				color: var(--color-neutral-400);
+				font-size: var(--font-size-small);
+				font-weight: var(--font-weight-normal);
+				padding-top: 5px;
 			}
 			.game-hero {
-				height: 280px;
+				object-fit: cover;
+				width: 100%;
+				height: auto;
+				max-height: 250px;
 			}
-			.game-header {
-				z-index: 4;
-				position: absolute;
-				top: 200px;
-				
+			.featured-article-header-container {
+				transform: translateY(var(--_yoffset));
+				margin-bottom: var(--_yoffset);
+				max-width: min(100%, 460px);
+				margin-inline: var(--space-m);
+				.game-header {
+					border-radius: var(--border-radius-m);
+					object-fit: cover;
+				}
 			}
-		}
-		.game-hero {
-			object-fit: cover;
-			max-height: 280px;
+			.featured-article-main-content {
+				display: flex;
+				flex-direction: column;
+				justify-content: space-between;
+				align-items: center;
+				h3 {
+					padding-bottom: 0.125em;
+				}
+			}
+			.featured-article-text {
+				max-width: min(100%, 460px);
+				margin-top: var(--space-s);
+				padding-inline: var(--space-s);
+				p:last-of-type {
+					padding-bottom: var(--space-s);
+				}
+			}
 		}
 
 		.article-container {
@@ -238,6 +270,17 @@ const bestRatedReviews = [...allEntriesReviews].sort(
 				}
 			}
 		}
+		@media only screen and (min-width: 48rem) {
+			.featured-article {
+				.featured-article-main-content {
+					flex-direction: row;
+				}
+				.featured-article-text {
+					margin-top: var(--space-xs);
+				}
+			}
+		}
+
 		@media only screen and (max-width: 500px) {
 			.article-container {
 				grid-template-columns: 1fr;
