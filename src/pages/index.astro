@@ -13,12 +13,19 @@ const featuredArticle = (await getEntry("reviews", "terraria")) ?? {
 	},
 };
 const allEntriesReviews = await getCollection("reviews");
+const allEntriesBlog = await getCollection("posts");
+const allEntries = [...allEntriesReviews, ...allEntriesBlog];
+
 const chronologicallySortedReviews = [...allEntriesReviews].sort(
 	(a, b) => b.data.pubDate.getTime() - a.data.pubDate.getTime(),
 );
 const bestRatedReviews = [...allEntriesReviews].sort(
 	(a, b) => b.data.rating - a.data.rating,
 );
+const chronologicallySortedAll = [...allEntries].sort(
+    (a, b) => b.data.pubDate.getTime() - a.data.pubDate.getTime(),
+);
+
 ---
 
 <BaseLayout
@@ -164,6 +171,19 @@ const bestRatedReviews = [...allEntriesReviews].sort(
 						</ul>
 					</div>
 				</nav>
+				<nav class="aside-navigation-container updates-container">
+					<h2 class="text-align-center">Last Updates</h2>
+					<ul style="padding-left: 0;" class="margin-inline-auto">
+						{
+							chronologicallySortedAll.slice(0, 3).map((post) => (
+								<li>
+									<p><a href={`/${post.collection}/${post.slug}`}>{post.data.title}</a> published {post.data.pubDate.toLocaleDateString('en-US', {month: 'long', day: 'numeric', year: 'numeric'})}</p>
+									<p>{post.data.pubDate.toLocaleDateString('en-US', {month: 'long', day: 'numeric', year: 'numeric'})}</p>
+								</li>
+							))
+						}
+					</ul>
+				</nav>
 			</aside>
 		</div>
 	</main>
@@ -259,6 +279,43 @@ const bestRatedReviews = [...allEntriesReviews].sort(
 			}
 		}
 
+		.aside-container {
+			margin-inline: auto;
+			display: flex;
+			flex-direction: row;
+			flex-wrap: wrap;
+			justify-content: center;
+			gap: var(--space-xl);
+		}
+		.aside-navigation-container {
+			height: fit-content;
+			background-color: var(--color-neutral-800);
+			padding: var(--space-l) var(--space-xl);
+			border-radius: var(--border-radius-m);
+			h2 {
+				font-size: var(--font-size-large);
+				padding-bottom: var(--space-s);
+				margin-bottom: var(--space-l);
+				border-bottom: 1px solid var(--color-neutral-600);
+			}
+			h3 {
+				padding-bottom: var(--space-m);
+				font-size: var(--text-size-2xl);
+				color: var(--color-accent-300);
+			}
+			div:not(:first-of-type) {
+				margin-top: var(--space-l);
+			}
+		}
+		.aside-navigation-container div ul {
+			gap: var(--space-s);
+		}
+
+		.updates-container {
+			padding-inline: var(--space-l);
+			max-width: 100%;
+		}
+
 		@media (--viewport-s) {
 			.featured-article {
 				/*flex-direction: column-reverse;*/
@@ -303,33 +360,11 @@ const bestRatedReviews = [...allEntriesReviews].sort(
 					flex-direction: column;
 				}
 			}
-		}
-
-		.aside-container {
-			margin-inline: auto;
-			height: fit-content;
-		}
-		.aside-navigation-container {
-			background-color: var(--color-neutral-800);
-			padding: var(--space-l) var(--space-xl);
-			border-radius: var(--border-radius-m);
-			h2 {
-				font-size: var(--font-size-large);
-				padding-bottom: var(--space-s);
-				margin-bottom: var(--space-l);
-				border-bottom: 1px solid var(--color-neutral-600);
+			.aside-container {
+				flex-direction: column;
+				justify-content: flex-start;
+				max-width: 280px;
 			}
-			h3 {
-				padding-bottom: var(--space-m);
-				font-size: var(--text-size-2xl);
-				color: var(--color-accent-300);
-			}
-			div:not(:first-of-type) {
-				margin-top: var(--space-l);
-			}
-		}
-		.aside-navigation-container div ul {
-			gap: var(--space-s);
 		}
 	</style>
 </BaseLayout>
