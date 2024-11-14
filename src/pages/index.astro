@@ -23,9 +23,8 @@ const bestRatedReviews = [...allEntriesReviews].sort(
 	(a, b) => b.data.rating - a.data.rating,
 );
 const chronologicallySortedAll = [...allEntries].sort(
-    (a, b) => b.data.pubDate.getTime() - a.data.pubDate.getTime(),
+	(a, b) => b.data.pubDate.getTime() - a.data.pubDate.getTime(),
 );
-
 ---
 
 <BaseLayout
@@ -177,8 +176,14 @@ const chronologicallySortedAll = [...allEntries].sort(
 						{
 							chronologicallySortedAll.slice(0, 3).map((post) => (
 								<li>
-									<p><a href={`/${post.collection}/${post.slug}`}>{post.data.title}</a> published {post.data.pubDate.toLocaleDateString('en-US', {month: 'long', day: 'numeric', year: 'numeric'})}</p>
-									<p>{post.data.pubDate.toLocaleDateString('en-US', {month: 'long', day: 'numeric', year: 'numeric'})}</p>
+									<p>
+										<a
+											href={`/${post.collection === "reviews" ? "games" : post.collection === "posts" ? "blog" : ""}/${post.slug}`}
+										>
+											{post.data.title}
+										</a>
+										and released one some day.
+									</p>
 								</li>
 							))
 						}
