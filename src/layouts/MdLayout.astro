@@ -1,6 +1,7 @@
 ---
 import type { getCollection, CollectionEntry } from "astro:content";
 import BaseLayout from "../layouts/BaseLayout.astro";
+import { Image } from "astro:assets";
 
 interface Props {
 	post: CollectionEntry<"reviews"> | CollectionEntry<"posts">;
@@ -9,7 +10,101 @@ const { post } = Astro.props;
 ---
 
 <BaseLayout title={post.data.title} description={post.data.description}>
-	<main class="height-smart-fill-screen">
-		<slot />
-	</main>
+	<div class="base-layout">
+		<div class="post-container">
+			<aside>
+				<p>Test</p>
+			</aside>
+			<main class="height-smart-fill-screen set-main-content-max-width">
+				<Image
+					src={post.data.hero as ImageMetadata}
+					alt={post.data.heroAlt}
+					class="hero-image"
+				/>
+				<div class="cover-container">
+					<Image
+						src={post.data.cover as ImageMetadata}
+						alt={post.data.coverAlt}
+						class="cover-image"
+					/>
+				</div>
+				<div class="flow">
+					<h1>{post.data.title}</h1>
+					<slot />
+				</div>
+			</main>
+			<aside>
+				<p>
+					Some information on other blog posts, latest releases and
+					more.
+				</p>
+				<div class="price-overview"></div>
+				<div class="similar-games"></div>
+				<div class="latest-posts"></div>
+				<div class="popular-posts"></div>
+			</aside>
+		</div>
+	</div>
 </BaseLayout>
+
+<style>
+	.base-layout {
+		border: 1px solid red;
+	}
+	.post-container {
+		border: 1px solid blue;
+		display: flex;
+		flex-wrap: wrap;
+		justify-content: center;
+	}
+	main {
+		border: 1px solid green;
+	}
+	.hero-image {
+		width: 100%;
+		height: auto;
+		max-height: 350px;
+		min-height: 120px;
+		object-fit: cover;
+		filter: grayscale(70%);
+	}
+	.cover-container {
+		--_yoffset: -120px;
+
+		transform: translateY(var(--_yoffset));
+		margin-bottom: calc(var(--_yoffset) + var(--space-m));
+		margin-inline: var(--space-s);
+		min-height: 150px;
+		margin-top: 20px;
+		
+		.cover-image {
+			border-radius: var(--border-radius-m);
+			max-width: min(100%, 460px);
+			object-fit: cover;
+			aspect-ratio: 2 / 1;
+			width: auto;
+			height: auto;
+			margin-inline: auto;
+		}
+	}
+	.price-overview {
+		height: 350px;
+		width: 280px;
+		background-color: aqua;
+	}
+	.similar-games {
+		height: 450px;
+		width: 280px;
+		background-color: blueviolet;
+	}
+	.latest-posts {
+		height: 250px;
+		width: 280px;
+		background-color: wheat;
+	}
+	.popular-posts {
+		height: 150px;
+		width: 280px;
+		background-color: tomato;
+	}
+</style>

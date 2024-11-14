@@ -35,15 +35,24 @@ const postCollection = defineCollection({
         description: z.string().max(200, "Maximum of 200 characters in description required.").min(25, "Minimum of 25 characters in description required."),
         author: z.string(),
         cover: image()
-            .refine((img) => img.width = 1600, {
-                message: "Blog hero image must be 1600 pixel wide!",
+            .refine((img) => img.width > 350, {
+                message: "Cover image must be at least 350 pixel wide!",
             })
-            .refine((img) => img.height = 900, {
-                message: "Blog hero image must be 900 pixel high!",
+            .refine((img) => img.height > 200, {
+                message: "Cover image must be at least 200 pixel high!",
             }),
         coverAlt: z.string(),
+        hero: image()
+            .refine((img) => img.width > 350, {
+                message: "Hero image must be at least 350 pixel wide!",
+            })
+            .refine((img) => img.height > 200, {
+                message: "Hero image must be at least 200 pixel high!",
+            }),
+        heroAlt: z.string(),
         pubDate: z.date(),
         tags: z.array(z.string()),
+        rating: z.number().max(5, "Max rating is 5.").min(0, "Minimum rating is 0"),
     })
 });
 

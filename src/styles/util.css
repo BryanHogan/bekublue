@@ -73,6 +73,6 @@
 .set-base-layout-max-width {
   max-width: min(var(--base-layout-max-width), 100% - (var(--side-gap-padding) * 2));
 }
-.set-text-max-width {
-  max-width: var(--text-max-width);
+.set-main-content-max-width {
+  max-width: var(--main-content-max-width);
 }
