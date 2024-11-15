@@ -8,6 +8,7 @@ import CultOfTheLamb from "../assets/images/games/Cult-Of-The-Lamb-Header.jpg";
 import SideCard from "../components/SideCard.astro";
 import GameCard from "../components/GameCard.astro";
 import TableOfContentsList from "../components/toc/TableOfContentsList.astro";
+import { Icons } from "../components/Icons";
 
 interface Props {
 	post: CollectionEntry<"reviews"> | CollectionEntry<"posts">;
@@ -52,11 +53,15 @@ const { headings } = await post.render();
 					</SideCard>
 					<div class="toc">
 						<div class="sticky-element">
-							<Icon
-								name="bars"
-								label="Table of Content icon"
-								size="1.5rem"
-							/>
+							<span class="toc-icon">
+								<svg
+									width="22"
+									height="22"
+									viewBox="0 0 24 24"
+									fill="currentColor"
+									set:html={Icons["rightcaret"]}
+								/>
+							</span>
 							<div class="toc-items">
 								<p><strong>Table of Contents</strong></p>
 								<TableOfContentsList
@@ -290,9 +295,76 @@ const { headings } = await post.render();
 		}
 	}
 
+	@media only screen and (max-width: 999.9px) {
+		.toc {
+			display: contents;
+		}
+
+		.toc-icon {
+			position: fixed;
+			top: var(--space-xs);
+			right: var(--space-xl);
+			display: block;
+			cursor: pointer;
+			padding: var(--space-2xs);
+			border-radius: var(--border-radius-m);
+			transition: background-color var(--transition-normal);
+			z-index: 100;
+		}
+
+		.toc-icon:hover, .toc-icon:focus-within {
+			background-color: var(--color-neutral-800);
+		}
+
+		.toc-icon svg {
+			transition: transform var(--transition-normal);
+		}
+
+		.toc-icon[aria-expanded="true"] svg {
+			transform: rotate(90deg);
+		}
+
+		.toc-items {
+			position: fixed;
+			top: calc(var(--navbar-height) + var(--space-m));
+			right: 0;
+			display: none;
+			max-height: calc(100svh - var(--navbar-height) - 75px);
+			overflow-y: auto;
+			background-color: var(--color-neutral-800);
+			border-radius: var(--border-radius-m) 0 0 var(--border-radius-m);
+			padding: var(--space-m);
+			box-shadow: var(--shadow-m);
+			min-width: 200px;
+			max-width: calc(100vw - var(--space-xl));
+			z-index: 99;
+		}
+
+		.toc-icon[aria-expanded="true"] + .toc-items {
+			display: block;
+			animation: slideInFromRight 0.2s ease-out;
+		}
+	}
+
+	@keyframes slideInFromRight {
+		from {
+			opacity: 0;
+			transform: translateX(20px);
+		}
+		to {
+			opacity: 1;
+			transform: translateX(0);
+		}
+	}
+
 	@media only screen and (min-width: 1000px) {
 		.toc {
 			width: 100%;
+		}
+		.toc-icon {
+			display: none;
+			padding: 0;
+			margin: 0;
 		}
 		.sticky-element {
 			transition: top 0.3s ease;
@@ -308,16 +380,19 @@ const { headings } = await post.render();
 	}
 </style>
 
-<script type="module">
+<script>
 	const observer = new MutationObserver((mutations) => {
 		const stickyElement = document.querySelector(".sticky-element");
 		const asideContainer = document.querySelector(".aside-container-left");
-		
+
 		if (stickyElement && asideContainer) {
 			// Function to update width
 			const updateWidth = () => {
 				const asideWidth = asideContainer.getBoundingClientRect().width;
-				stickyElement.style.setProperty('--aside-width', `${asideWidth}px`);
+				stickyElement.style.setProperty(
+					"--aside-width",
+					`${asideWidth}px`,
+				);
 			};
 
 			// Function to update offset
@@ -332,7 +407,7 @@ const { headings } = await post.render();
 				if (!stickyElement.classList.contains("fixed")) {
 					stickyOffset = updateOffset();
 				}
-				
+
 				if (window.scrollY >= stickyOffset - 50) {
 					stickyElement.classList.add("fixed");
 				} else {
@@ -361,4 +436,50 @@ const { headings } = await post.render();
 		}
 	});
 	observer.observe(document.body, { childList: true, subtree: true });
+
+	function setupTocToggle() {
+		const tocToggle = document.querySelector(
+			".toc-icon",
+		) as HTMLElement | null;
+		const tocItems = document.querySelector(
+			".toc-items",
+		) as HTMLElement | null;
+
+		if (!tocToggle || !tocItems) return;
+
+		// Set initial ARIA state first
+		tocToggle.setAttribute("aria-expanded", "false");
+		tocToggle.setAttribute("aria-controls", "toc-items");
+		tocItems.id = "toc-items";
+
+		const closeToc = (event: Event) => {
+			if (
+				tocItems.contains(event.target as Node) ||
+				tocToggle.contains(event.target as Node)
+			)
+				return;
+			tocToggle.setAttribute("aria-expanded", "false");
+		};
+
+		const toggleToc = (event: Event) => {
+			event.stopPropagation();
+			const isExpanded =
+				tocToggle.getAttribute("aria-expanded") === "true";
+			tocToggle.setAttribute("aria-expanded", (!isExpanded).toString());
+		};
+
+		// Remove existing event listeners to prevent duplicates
+		tocToggle.removeEventListener("click", toggleToc);
+		document.removeEventListener("click", closeToc);
+
+		// Add event listeners
+		tocToggle.addEventListener("click", toggleToc);
+		document.addEventListener("click", closeToc);
+	}
+
+	// Initial setup
+	setupTocToggle();
+
+	// Setup after Astro view transitions
+	document.addEventListener("astro:after-swap", setupTocToggle);
 </script>
