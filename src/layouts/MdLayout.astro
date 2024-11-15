@@ -2,15 +2,18 @@
 import type { getCollection, CollectionEntry } from "astro:content";
 import BaseLayout from "../layouts/BaseLayout.astro";
 import { Image } from "astro:assets";
+import { generateToC } from "../components/toc/generateToC";
 import Icon from "../components/Icon.astro";
 import CultOfTheLamb from "../assets/images/games/Cult-Of-The-Lamb-Header.jpg";
 import SideCard from "../components/SideCard.astro";
 import GameCard from "../components/GameCard.astro";
+import TableOfContentsList from "../components/toc/TableOfContentsList.astro";
 
 interface Props {
 	post: CollectionEntry<"reviews"> | CollectionEntry<"posts">;
 }
 const { post } = Astro.props;
+const { headings } = await post.render();
 ---
 
 <BaseLayout title={post.data.title} description={post.data.description}>
@@ -47,6 +50,24 @@ const { post } = Astro.props;
 					<SideCard title="Tags">
 						<p>Indie, Action, 2024, Pixel-style</p>
 					</SideCard>
+					<div class="toc">
+						<div class="sticky-element">
+							<Icon
+								name="bars"
+								label="Table of Content icon"
+								size="1.5rem"
+							/>
+							<div class="toc-items">
+								<TableOfContentsList
+									toc={generateToC(headings, {
+										minHeadingLevel: 1,
+										maxHeadingLevel: 6,
+										title: post.data.title,
+									})}
+								/>
+							</div>
+						</div>
+					</div>
 				</aside>
 				<main
 					class="height-smart-fill-screen set-main-content-max-width"
@@ -133,12 +154,33 @@ const { post } = Astro.props;
 					</ul>
 				</SideCard>
 				<SideCard title="E-Mail Newsletter">
-					<p>Also have a e-mail newsletter for you to stay up to date.</p>
+					<p>
+						Also have a e-mail newsletter for you to stay up to
+						date.
+					</p>
 				</SideCard>
 				<div class="social-media-aside-container">
-					<a href="#"><Icon name="instagram" label="Instagram icon" size="1.5rem"/></a>
-					<a href="#"><Icon name="mastodon" label="Mastodon icon" size="1.5rem"/></a>
-					<a href="#"><Icon name="threads" label="Threads icon" size="1.5rem"/></a>
+					<a href="#"
+						><Icon
+							name="instagram"
+							label="Instagram icon"
+							size="1.5rem"
+						/></a
+					>
+					<a href="#"
+						><Icon
+							name="mastodon"
+							label="Mastodon icon"
+							size="1.5rem"
+						/></a
+					>
+					<a href="#"
+						><Icon
+							name="threads"
+							label="Threads icon"
+							size="1.5rem"
+						/></a
+					>
 				</div>
 			</aside>
 		</div>
@@ -209,7 +251,7 @@ const { post } = Astro.props;
 		justify-content: center;
 		gap: var(--space-l);
 		height: fit-content;
-		>div {
+		> div {
 			height: 10px;
 		}
 		ul li {
@@ -246,4 +288,40 @@ const { post } = Astro.props;
 			flex-direction: row-reverse;
 		}
 	}
+
+	@media only screen and (min-width: 1000px) {
+		.toc {
+		}
+		.sticky-element {
+			transition: all 0.3s; /* Smooth transition for when it becomes fixed */
+			z-index: 10;
+		}
+		.fixed {
+			position: fixed;
+			top: var(--navbar-height);
+			width: max(20svw, 200px);
+		}
+	}
 </style>
+
+<script type="module">
+	const observer = new MutationObserver((mutations) => {
+		const stickyElement = document.querySelector(".sticky-element");
+		if (stickyElement) {
+			const stickyOffset = stickyElement.offsetTop;
+
+			const handleScroll = () => {
+				if (window.scrollY >= stickyOffset - 50) {
+					stickyElement.classList.add("fixed");
+				} else {
+					stickyElement.classList.remove("fixed");
+				}
+			};
+
+			window.addEventListener("scroll", handleScroll);
+
+			observer.disconnect();
+		}
+	});
+	observer.observe(document.body, { childList: true, subtree: true });
+</script>
