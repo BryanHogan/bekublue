@@ -5,8 +5,9 @@ interface Props {
     link: string;
     cover: any;
     coverAlt: string;
+    borderColor?: string;
 }
-const { title, description, link, cover, coverAlt } = Astro.props;
+const { title, description, link, cover, coverAlt, borderColor = "var(--color-neutral-300)" } = Astro.props;
 
 import { Image } from "astro:assets";
 ---
@@ -21,7 +22,7 @@ import { Image } from "astro:assets";
     </a>
 </article>
 
-<style>
+<style define:vars={{ "border-color": borderColor}}>
     a,
     a * {
         text-decoration: none;
@@ -31,7 +32,7 @@ import { Image } from "astro:assets";
 
     article {
         border-radius: var(--border-radius-m);
-        border: 1px solid var(--color-neutral-300);
+        border: 1px solid var(--border-color);
         height: 100%;
 
         & .game-header {

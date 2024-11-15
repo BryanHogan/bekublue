@@ -79,6 +79,7 @@ const { post } = Astro.props;
 								link={`/games/${post.slug}`}
 								cover={post.data.cover}
 								coverAlt={post.data.coverAlt}
+								borderColor="var(--color-neutral-500)"
 							/>
 						</li>
 						<li>
@@ -88,6 +89,7 @@ const { post } = Astro.props;
 								link={`/games/${post.slug}`}
 								cover={post.data.cover}
 								coverAlt={post.data.coverAlt}
+								borderColor="var(--color-neutral-500)"
 							/>
 						</li>
 					</ul>
@@ -101,6 +103,7 @@ const { post } = Astro.props;
 								link={`/games/${post.slug}`}
 								cover={post.data.cover}
 								coverAlt={post.data.coverAlt}
+								borderColor="var(--color-neutral-500)"
 							/>
 						</li>
 					</ul>
@@ -114,6 +117,7 @@ const { post } = Astro.props;
 								link={`/games/${post.slug}`}
 								cover={post.data.cover}
 								coverAlt={post.data.coverAlt}
+								borderColor="var(--color-neutral-500)"
 							/>
 						</li>
 						<li>
@@ -123,6 +127,7 @@ const { post } = Astro.props;
 								link={`/games/${post.slug}`}
 								cover={post.data.cover}
 								coverAlt={post.data.coverAlt}
+								borderColor="var(--color-neutral-500)"
 							/>
 						</li>
 					</ul>
@@ -130,6 +135,11 @@ const { post } = Astro.props;
 				<SideCard title="E-Mail Newsletter">
 					<p>Also have a e-mail newsletter for you to stay up to date.</p>
 				</SideCard>
+				<div class="social-media-aside-container">
+					<a href="#"><Icon name="instagram" label="Instagram icon" size="1.5rem"/></a>
+					<a href="#"><Icon name="mastodon" label="Mastodon icon" size="1.5rem"/></a>
+					<a href="#"><Icon name="threads" label="Threads icon" size="1.5rem"/></a>
+				</div>
 			</aside>
 		</div>
 	</div>
@@ -184,6 +194,7 @@ const { post } = Astro.props;
 		display: flex;
 		flex-direction: column;
 		gap: var(--space-l);
+		min-width: 220px;
 	}
 
 	.aside-container-right {
@@ -195,6 +206,15 @@ const { post } = Astro.props;
 		ul li:not(:last-of-type) {
 			padding-bottom: var(--space-m);
 		}
+	}
+	.social-media-aside-container {
+		display: flex;
+		justify-content: center;
+		flex-direction: row;
+		flex-wrap: wrap;
+		padding-inline: var(--space-s);
+		padding-block: var(--space-s);
+		gap: var(--space-s);
 	}
 
 	@media only screen and (min-width: 1350px) {
