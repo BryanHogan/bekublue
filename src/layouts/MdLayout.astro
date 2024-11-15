@@ -380,7 +380,7 @@ const { headings } = await post.render();
 </style>
 
 <script>
-	const observer = new MutationObserver((mutations) => {
+	function setupStickyToc() {
 		const stickyElement = document.querySelector(".sticky-element") as HTMLElement;
 		const asideContainer = document.querySelector(".aside-container-left");
 
@@ -430,11 +430,20 @@ const { headings } = await post.render();
 			window.addEventListener("scroll", handleScroll);
 			window.addEventListener("resize", handleResize);
 
-			// Cleanup
-			observer.disconnect();
+			return () => {
+				window.removeEventListener("scroll", handleScroll);
+				window.removeEventListener("resize", handleResize);
+			};
 		}
+	}
+
+	// Run on initial page load
+	setupStickyToc();
+
+	// Run after view transitions
+	document.addEventListener('astro:after-swap', () => {
+		setupStickyToc();
 	});
-	observer.observe(document.body, { childList: true, subtree: true });
 
 	function setupTocToggle() {
 		const tocToggle = document.querySelector(
@@ -446,7 +455,6 @@ const { headings } = await post.render();
 
 		if (!tocToggle || !tocItems) return;
 
-		// Set initial ARIA state first
 		tocToggle.setAttribute("aria-expanded", "false");
 		tocToggle.setAttribute("aria-controls", "toc-items");
 		tocItems.id = "toc-items";
@@ -467,18 +475,14 @@ const { headings } = await post.render();
 			tocToggle.setAttribute("aria-expanded", (!isExpanded).toString());
 		};
 
-		// Remove existing event listeners to prevent duplicates
 		tocToggle.removeEventListener("click", toggleToc);
 		document.removeEventListener("click", closeToc);
 
-		// Add event listeners
 		tocToggle.addEventListener("click", toggleToc);
 		document.addEventListener("click", closeToc);
 	}
 
-	// Initial setup
 	setupTocToggle();
 
-	// Setup after Astro view transitions
 	document.addEventListener("astro:after-swap", setupTocToggle);
 </script>
