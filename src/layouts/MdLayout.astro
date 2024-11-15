@@ -210,7 +210,6 @@ const { headings } = await post.render();
 		display: flex;
 		flex-direction: column-reverse;
 		gap: var(--space-xl);
-		border: 1px solid red;
 		justify-content: center;
 	}
 
@@ -382,7 +381,7 @@ const { headings } = await post.render();
 
 <script>
 	const observer = new MutationObserver((mutations) => {
-		const stickyElement = document.querySelector(".sticky-element");
+		const stickyElement = document.querySelector(".sticky-element") as HTMLElement;
 		const asideContainer = document.querySelector(".aside-container-left");
 
 		if (stickyElement && asideContainer) {
