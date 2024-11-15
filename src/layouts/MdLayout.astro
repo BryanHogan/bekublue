@@ -2,6 +2,10 @@
 import type { getCollection, CollectionEntry } from "astro:content";
 import BaseLayout from "../layouts/BaseLayout.astro";
 import { Image } from "astro:assets";
+import Icon from "../components/Icon.astro";
+import CultOfTheLamb from "../assets/images/games/Cult-Of-The-Lamb-Header.jpg";
+import SideCard from "../components/sideCard.astro";
+import GameCard from "../components/GameCard.astro";
 
 interface Props {
 	post: CollectionEntry<"reviews"> | CollectionEntry<"posts">;
@@ -12,36 +16,120 @@ const { post } = Astro.props;
 <BaseLayout title={post.data.title} description={post.data.description}>
 	<div class="base-layout">
 		<div class="post-container">
-			<aside>
-				<p>Test</p>
-			</aside>
-			<main class="height-smart-fill-screen set-main-content-max-width">
-				<Image
-					src={post.data.hero as ImageMetadata}
-					alt={post.data.heroAlt}
-					class="hero-image"
-				/>
-				<div class="cover-container">
+			<div class="post-container-left-middle">
+				<aside class="aside-container-left">
+					<SideCard title="Game Info">
+						<p><small>Platforms</small></p>
+						<p>PC, Xbox, Switch...</p>
+						<p><small>Release date</small></p>
+						<p>May 5, 2023</p>
+						<p><small>Developer</small></p>
+						<p>Someone</p>
+					</SideCard>
+					<SideCard title="Price">
+						<p><small>Current price (Steam)</small></p>
+						<p>15,50€</p>
+						<p><small>Current most low</small></p>
+						<p>14,52€</p>
+						<p><small>All time low</small></p>
+						<p>8,89€</p>
+					</SideCard>
+					<div>
+						<Icon name="star" label="icon" size="1.5rem" /><p>
+							Steam
+						</p>
+					</div>
+					<div>
+						<Icon name="star" label="icon" size="1.5rem" /><p>
+							GOG
+						</p>
+					</div>
+					<SideCard title="Tags">
+						<p>Indie, Action, 2024, Pixel-style</p>
+					</SideCard>
+				</aside>
+				<main
+					class="height-smart-fill-screen set-main-content-max-width"
+				>
 					<Image
-						src={post.data.cover as ImageMetadata}
-						alt={post.data.coverAlt}
-						class="cover-image"
+						src={post.data.hero as ImageMetadata}
+						alt={post.data.heroAlt}
+						class="hero-image"
 					/>
-				</div>
-				<div class="flow">
-					<h1>{post.data.title}</h1>
-					<slot />
-				</div>
-			</main>
-			<aside>
-				<p>
-					Some information on other blog posts, latest releases and
-					more.
-				</p>
-				<div class="price-overview"></div>
-				<div class="similar-games"></div>
-				<div class="latest-posts"></div>
-				<div class="popular-posts"></div>
+					<div class="cover-container">
+						<Image
+							src={post.data.cover as ImageMetadata}
+							alt={post.data.coverAlt}
+							class="cover-image"
+						/>
+					</div>
+					<div class="flow">
+						<h1>{post.data.title}</h1>
+						<slot />
+					</div>
+				</main>
+			</div>
+			<aside class="aside-container-right">
+				<SideCard title="Similar Games">
+					<ul role="list" class="similar-games-list">
+						<li>
+							<GameCard
+								title={post.data.title}
+								description={post.data.description}
+								link={`/games/${post.slug}`}
+								cover={post.data.cover}
+								coverAlt={post.data.coverAlt}
+							/>
+						</li>
+						<li>
+							<GameCard
+								title={post.data.title}
+								description={post.data.description}
+								link={`/games/${post.slug}`}
+								cover={post.data.cover}
+								coverAlt={post.data.coverAlt}
+							/>
+						</li>
+					</ul>
+				</SideCard>
+				<SideCard title="Relevant Blog Posts">
+					<ul role="list" class="relevant-blog-posts-list">
+						<li>
+							<GameCard
+								title={post.data.title}
+								description={post.data.description}
+								link={`/games/${post.slug}`}
+								cover={post.data.cover}
+								coverAlt={post.data.coverAlt}
+							/>
+						</li>
+					</ul>
+				</SideCard>
+				<SideCard title="Latest Posts">
+					<ul role="list" class="lastest-posts-list">
+						<li>
+							<GameCard
+								title={post.data.title}
+								description={post.data.description}
+								link={`/games/${post.slug}`}
+								cover={post.data.cover}
+								coverAlt={post.data.coverAlt}
+							/>
+						</li>
+						<li>
+							<GameCard
+								title={post.data.title}
+								description={post.data.description}
+								link={`/games/${post.slug}`}
+								cover={post.data.cover}
+								coverAlt={post.data.coverAlt}
+							/>
+						</li>
+					</ul>
+				</SideCard>
+				<SideCard title="E-Mail Newsletter">
+					<p>Also have a e-mail newsletter for you to stay up to date.</p>
+				</SideCard>
 			</aside>
 		</div>
 	</div>
@@ -49,17 +137,22 @@ const { post } = Astro.props;
 
 <style>
 	.base-layout {
-		border: 1px solid red;
 	}
 	.post-container {
-		border: 1px solid blue;
 		display: flex;
 		flex-wrap: wrap;
+		flex-direction: column;
 		justify-content: center;
+		gap: var(--space-xl);
 	}
 	main {
-		border: 1px solid green;
 	}
+	.post-container-left-middle {
+		display: flex;
+		flex-direction: column-reverse;
+		gap: var(--space-xl);
+	}
+
 	.hero-image {
 		width: 100%;
 		height: auto;
@@ -76,7 +169,7 @@ const { post } = Astro.props;
 		margin-inline: var(--space-s);
 		min-height: 150px;
 		margin-top: 20px;
-		
+
 		.cover-image {
 			border-radius: var(--border-radius-m);
 			max-width: min(100%, 460px);
@@ -87,24 +180,35 @@ const { post } = Astro.props;
 			margin-inline: auto;
 		}
 	}
-	.price-overview {
-		height: 350px;
-		width: 280px;
-		background-color: aqua;
+	.aside-container-left {
+		display: flex;
+		flex-direction: column;
+		gap: var(--space-l);
 	}
-	.similar-games {
-		height: 450px;
-		width: 280px;
-		background-color: blueviolet;
+
+	.aside-container-right {
+		display: flex;
+		flex-direction: column;
+		gap: var(--space-l);
+		max-width: 340px;
+		width: fit-content;
+		ul li:not(:last-of-type) {
+			padding-bottom: var(--space-m);
+		}
 	}
-	.latest-posts {
-		height: 250px;
-		width: 280px;
-		background-color: wheat;
+
+	@media only screen and (min-width: 1350px) {
+		.post-container {
+			flex-direction: row;
+			flex-wrap: nowrap;
+		}
+		.post-container-left-middle {
+			flex-direction: row;
+		}
 	}
-	.popular-posts {
-		height: 150px;
-		width: 280px;
-		background-color: tomato;
+	@media only screen and (min-width: 1000px) and (max-width: 1349.99px) {
+		.post-container-left-middle {
+			flex-direction: row-reverse;
+		}
 	}
 </style>

@@ -1,0 +1,30 @@
+---
+interface Props {
+    title: string;
+}
+
+const { title } = Astro.props;
+---
+
+<div class="container">
+    <h2 class="text-align-center">{title}</h2>
+    <slot />
+</div>
+
+<style>
+    .container {
+        padding: var(--space-m) var(--space-l);
+        background-color: var(--color-neutral-800);
+        border-radius: var(--border-radius-m);
+        h2 {
+            font-size: var(--font-size-large);
+            padding-bottom: var(--space-s);
+            margin-bottom: var(--space-l);
+            border-bottom: 1px solid var(--color-neutral-600);
+        }
+        :global(small){
+            font-size: var(--font-size-normal);
+            color: var(--color-neutral-300);
+        }
+    }
+</style>
