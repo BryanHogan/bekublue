@@ -58,6 +58,7 @@ const { headings } = await post.render();
 								size="1.5rem"
 							/>
 							<div class="toc-items">
+								<p><strong>Table of Contents</strong></p>
 								<TableOfContentsList
 									toc={generateToC(headings, {
 										minHeadingLevel: 1,
@@ -85,7 +86,7 @@ const { headings } = await post.render();
 						/>
 					</div>
 					<div class="flow">
-						<h1>{post.data.title}</h1>
+						<h1 id="_top">{post.data.title}</h1>
 						<slot />
 					</div>
 				</main>
@@ -291,15 +292,18 @@ const { headings } = await post.render();
 
 	@media only screen and (min-width: 1000px) {
 		.toc {
+			width: 100%;
 		}
 		.sticky-element {
-			transition: all 0.3s; /* Smooth transition for when it becomes fixed */
+			transition: top 0.3s ease;
 			z-index: 10;
+			width: 100%;
+			padding: 1rem;
 		}
 		.fixed {
 			position: fixed;
 			top: var(--navbar-height);
-			width: max(20svw, 200px);
+			width: var(--aside-width);
 		}
 	}
 </style>
@@ -307,10 +311,28 @@ const { headings } = await post.render();
 <script type="module">
 	const observer = new MutationObserver((mutations) => {
 		const stickyElement = document.querySelector(".sticky-element");
-		if (stickyElement) {
-			const stickyOffset = stickyElement.offsetTop;
+		const asideContainer = document.querySelector(".aside-container-left");
+		
+		if (stickyElement && asideContainer) {
+			// Function to update width
+			const updateWidth = () => {
+				const asideWidth = asideContainer.getBoundingClientRect().width;
+				stickyElement.style.setProperty('--aside-width', `${asideWidth}px`);
+			};
+
+			// Function to update offset
+			const updateOffset = () => {
+				return stickyElement.offsetTop;
+			};
+
+			let stickyOffset = updateOffset();
 
 			const handleScroll = () => {
+				// Recalculate offset if element is not fixed
+				if (!stickyElement.classList.contains("fixed")) {
+					stickyOffset = updateOffset();
+				}
+				
 				if (window.scrollY >= stickyOffset - 50) {
 					stickyElement.classList.add("fixed");
 				} else {
@@ -318,8 +340,23 @@ const { headings } = await post.render();
 				}
 			};
 
-			window.addEventListener("scroll", handleScroll);
+			// Function to handle resize
+			const handleResize = () => {
+				// Remove fixed class temporarily to get correct offset
+				stickyElement.classList.remove("fixed");
+				updateWidth();
+				stickyOffset = updateOffset();
+				handleScroll(); // Re-check scroll position with new offset
+			};
 
+			// Initial setup
+			updateWidth();
+
+			// Add event listeners
+			window.addEventListener("scroll", handleScroll);
+			window.addEventListener("resize", handleResize);
+
+			// Cleanup
 			observer.disconnect();
 		}
 	});
