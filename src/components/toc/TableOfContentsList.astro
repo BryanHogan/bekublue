@@ -63,31 +63,31 @@ const { toc, depth = 0 } = Astro.props;
 
 	// Function to handle scroll event
 	const handleScroll = () => {
-		const headings = document.querySelectorAll("h1, h2, h3, h4, h5, h6");
-		let activeHeading: HTMLElement | null = null;
+    const mainContent = document.querySelector(".main-content");
+    if (!mainContent) return;
 
-		headings.forEach((heading) => {
-			// Cast to HTMLElement to ensure TypeScript knows it has an 'id'
-			if (isInViewport(heading as HTMLElement)) {
-				activeHeading = heading as HTMLElement;
-			}
-		});
+    const headings = mainContent.querySelectorAll("h1, h2, h3, h4, h5, h6");
+    let activeHeading: HTMLElement | null = null;
 
-		if (activeHeading) {
-			// Use a type assertion to ensure TypeScript knows 'activeHeading' has an 'id'
-			const activeLink = document.querySelector(
-				`[href="#${(activeHeading as HTMLElement & { id: string }).id}"]`,
-			);
-			if (activeLink) {
-				// Remove active class from all links
-				document.querySelectorAll("a").forEach((link) => {
-					link.classList.remove("active");
-				});
-				// Add active class to the corresponding link
-				(activeLink as HTMLElement).classList.add("active");
-			}
-		}
-	};
+    headings.forEach((heading) => {
+        if (isInViewport(heading as HTMLElement)) {
+            activeHeading = heading as HTMLElement;
+        }
+    });
+
+    if (activeHeading) {
+        const activeLink = document.querySelector(
+            `[href="#${(activeHeading as HTMLElement & { id: string }).id}"]`
+        );
+        if (activeLink) {
+            document.querySelectorAll(".toc a").forEach((link) => {
+                link.classList.remove("active");
+            });
+            (activeLink as HTMLElement).classList.add("active");
+        }
+    }
+};
+
 
 	// Add scroll event listener
 	window.addEventListener("scroll", handleScroll);
