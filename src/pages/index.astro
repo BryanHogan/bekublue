@@ -7,11 +7,8 @@ import GameCard from "../components/GameCard.astro";
 import { getEntry, getEntries, getCollection } from "astro:content";
 import Icon from "../components/Icon.astro";
 import AButton from "../components/AButton.astro";
-const featuredArticle = (await getEntry("reviews", "terraria")) ?? {
-	data: {
-		title: "Article Not Found",
-	},
-};
+import type { ImageMetadata } from 'astro';
+const featuredArticle = (await getEntry("reviews", "cult-of-the-lamb"));
 const allEntriesReviews = await getCollection("reviews");
 const allEntriesBlog = await getCollection("posts");
 const allEntries = [...allEntriesReviews, ...allEntriesBlog];
@@ -39,14 +36,14 @@ const chronologicallySortedAll = [...allEntries].sort(
 				</h1>
 				<article class="featured-article">
 					<Image
-						src={featuredArticle.data.hero}
+						src={featuredArticle.data.hero as ImageMetadata}
 						alt={featuredArticle.data.heroAlt}
 						class="game-hero"
 					/>
 					<div class="featured-article-main-content">
 						<div class="featured-article-header-container">
 							<Image
-								src={featuredArticle.data.cover}
+								src={featuredArticle.data.cover as ImageMetadata}
 								alt={featuredArticle.data.coverAlt}
 								class="game-header"
 							/>
@@ -148,25 +145,25 @@ const chronologicallySortedAll = [...allEntries].sort(
 			<aside class="aside-container">
 				<nav class="aside-navigation-container">
 					<h2 class="text-align-center">Navigation</h2>
-					<div class="flex-center flex-column">
+					<div class="">
 						<h3>Game Reviews</h3>
-						<ul role="list" class="flex-center">
-							<li><AButton title="Latest reviews" href="#" /></li>
-							<li><AButton title="Best rated" href="#" /></li>
+						<ul role="list">
+							<li><a href="#">Latest reviews</a></li>
+							<li><a href="#">Best rated</a></li>
 						</ul>
 					</div>
-					<div class="flex-center flex-column">
+					<div class="">
 						<h3>Blog</h3>
-						<ul role="list" class="flex-center">
-							<li><AButton title="Latest posts" href="#" /></li>
-							<li><AButton title="Game design" href="#" /></li>
+						<ul role="list">
+							<li><a href="#">Latest posts</a></li>
+							<li><a href="#">Game design</a></li>
 						</ul>
 					</div>
-					<div class="flex-center flex-column">
+					<div class="">
 						<h3>More</h3>
-						<ul role="list" class="flex-center">
-							<li><AButton title="Hidden gems" href="#" /></li>
-							<li><AButton title="Pokemon-likes" href="#" /></li>
+						<ul role="list">
+							<li><a href="#">Hidden gems</a></li>
+							<li><a href="#">Pokemon-likes</a></li>
 						</ul>
 					</div>
 				</nav>
@@ -302,9 +299,20 @@ const chronologicallySortedAll = [...allEntries].sort(
 				border-bottom: 1px solid var(--color-neutral-600);
 			}
 			h3 {
-				padding-bottom: var(--space-m);
-				font-size: var(--text-size-xl);
+				padding-bottom: var(--space-xs);
+				font-size: var(--font-size-large);
 				color: var(--color-accent-300);
+				font-weight: var(--font-weight-normal);
+			}
+			ul {
+				padding-left: var(--space-xs);
+			}
+			ul li a {
+				text-decoration: none;
+				color: var(--color-neutral-300);
+				&:hover, &:focus-within {
+					color: var(--color-neutral-100);
+				}
 			}
 			div:not(:first-of-type) {
 				margin-top: var(--space-l);
@@ -359,9 +367,6 @@ const chronologicallySortedAll = [...allEntries].sort(
 			.aside-navigation-container {
 				width: 100%;
 				margin-top: var(--space-2xl);
-				div ul {
-					flex-direction: column;
-				}
 			}
 			.aside-container {
 				flex-direction: column;
