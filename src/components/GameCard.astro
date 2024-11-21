@@ -7,7 +7,7 @@ interface Props {
     coverAlt: string;
     borderColor?: string;
 }
-const { title, description, link, cover, coverAlt, borderColor = "var(--color-neutral-400)" } = Astro.props;
+const { title, description, link, cover, coverAlt, borderColor = "var(--color-neutral-500)" } = Astro.props;
 
 import { Image } from "astro:assets";
 ---
@@ -52,6 +52,7 @@ import { Image } from "astro:assets";
         padding: var(--space-s);
         & h3 {
             padding-bottom: 0.125em;
+            font-size: var(--font-size-large);
         }
         & p {
             color: var(--color-neutral-200);
