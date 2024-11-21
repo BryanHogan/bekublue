@@ -1,14 +1,17 @@
 ---
 import type { getCollection, CollectionEntry } from "astro:content";
+import { getEntry } from "astro:content";
 import BaseLayout from "../layouts/BaseLayout.astro";
 import { Image } from "astro:assets";
 import { generateToC } from "../components/toc/generateToC";
 import Icon from "../components/Icon.astro";
-import CultOfTheLamb from "../assets/images/games/Cult-Of-The-Lamb-Header.jpg";
 import SideCard from "../components/SideCard.astro";
 import GameCard from "../components/GameCard.astro";
 import TableOfContentsList from "../components/toc/TableOfContentsList.astro";
 import { Icons } from "../components/Icons";
+import TinyGameCard from "../components/TinyGameCard.astro";
+
+const tinyCardReview = (await getEntry("reviews", "cult-of-the-lamb"));
 
 interface Props {
 	post: CollectionEntry<"reviews"> | CollectionEntry<"posts">;
@@ -93,6 +96,11 @@ const { headings } = await post.render();
 					<div class="flow">
 						<h1 id="_top">{post.data.title}</h1>
 						<slot />
+						<TinyGameCard review={tinyCardReview}/>
+						<TinyGameCard review={tinyCardReview}/>
+						<TinyGameCard review={tinyCardReview}/>
+						<TinyGameCard review={tinyCardReview}/>
+						<TinyGameCard review={tinyCardReview}/>
 					</div>
 				</main>
 			</div>

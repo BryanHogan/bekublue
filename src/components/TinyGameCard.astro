@@ -1,0 +1,50 @@
+---
+import type { CollectionEntry } from "astro:content";
+import { Image } from "astro:assets";
+interface Props {
+    review: CollectionEntry<"reviews">;
+}
+const { review } = Astro.props;
+---
+
+<article>
+    <a href={`/games/${review.slug}`}>
+        <Image
+            src={review.data.cover as ImageMetadata}
+            alt={review.data.coverAlt}
+            class="image"
+        />
+        <div>
+            <p>{review.data.title}</p>
+            <p class="second-row-text">Game Review</p>
+        </div>
+    </a>
+</article>
+
+<style>
+    article a {
+        max-width: 325px; /* Set to 100% */
+        display: flex;
+        flex-direction: row;
+        justify-content: flex-start;
+        align-items: center;
+        gap: var(--space-s);
+        text-decoration: none;
+        border-radius: var(--border-radius-m);
+        color: var(--color-neutral-100);
+        transition: background-color var(--transition-normal);
+        &:hover {
+            background-color: var(--color-neutral-800);
+        }
+    }
+    .second-row-text {
+        color: var(--color-neutral-300);
+        font-size: var(--font-size-small);
+    }
+    .image {
+        max-width: 100px;
+        height: 100px;
+        object-fit: cover;
+        border-radius: var(--border-radius-m);
+    }
+</style>
