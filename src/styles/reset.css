@@ -54,7 +54,7 @@ ul[role="list"] {
     scroll-padding-top: var(--navbar-height)
 }
 
-@media (prefers-reduced-motion: no-preferene) {
+@media (prefers-reduced-motion: no-preference) {
     :has(:target) {
         scroll-behavior: smooth;
     }

@@ -100,7 +100,6 @@
     --base-layout-max-width: 84rem;
     --main-content-max-width: 40rem;
 
-    --opacity-s: 0.3;
-    --opacity-m: 0.5;
-    --opacity-l: 0.7;
+    --opacity-weak: 0.3;
+    --opacity-strong: 0.7;
 }
