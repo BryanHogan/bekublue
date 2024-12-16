@@ -9,7 +9,6 @@ import SideCard from "../components/SideCard.astro";
 import GameCard from "../components/GameCard.astro";
 import TableOfContentsList from "../components/toc/TableOfContentsList.astro";
 import { Icons } from "../components/Icons";
-import TinyGameCard from "../components/TinyGameCard.astro";
 
 const tinyCardReview = await getEntry("reviews", "cult-of-the-lamb");
 
@@ -19,11 +18,14 @@ interface Props {
 const { post } = Astro.props;
 const { headings } = await post.render();
 
+const response = await fetch('http://localhost:4321/api/game-prices.json'); // Fetch the JSON file
+const gamePrices = await response.json(); // Parse the JSON data
 ---
 
 <BaseLayout title={post.data.title} description={post.data.description}>
-	<p>Price:</p>
+	<p>Price: {gamePrices.length}</p>
 	<p>No</p>
+	
 	<div class="base-layout">
 		<div class="post-container">
 			<div class="post-container-left-middle">
