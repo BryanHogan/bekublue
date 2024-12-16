@@ -11,23 +11,28 @@ import TableOfContentsList from "../components/toc/TableOfContentsList.astro";
 import { Icons } from "../components/Icons";
 import TinyGameCard from "../components/TinyGameCard.astro";
 
-const tinyCardReview = (await getEntry("reviews", "cult-of-the-lamb"));
+const tinyCardReview = await getEntry("reviews", "cult-of-the-lamb");
 
 interface Props {
 	post: CollectionEntry<"reviews"> | CollectionEntry<"posts">;
 }
 const { post } = Astro.props;
 const { headings } = await post.render();
+
 ---
 
 <BaseLayout title={post.data.title} description={post.data.description}>
+	<p>Price:</p>
+	<p>No</p>
 	<div class="base-layout">
 		<div class="post-container">
 			<div class="post-container-left-middle">
 				<aside class="aside-container-left">
 					<SideCard title="Game Info">
 						<p><small>Platforms</small></p>
-						<p style="padding-bottom: 0.375em;">PC, Xbox, Switch...</p>
+						<p style="padding-bottom: 0.375em;">
+							PC, Xbox, Switch...
+						</p>
 						<p><small>Release date</small></p>
 						<p style="padding-bottom: 0.375em;">May 5, 2023</p>
 						<p><small>Developer</small></p>
@@ -314,7 +319,8 @@ const { headings } = await post.render();
 			z-index: 100;
 		}
 
-		.toc-icon:hover, .toc-icon:focus-within {
+		.toc-icon:hover,
+		.toc-icon:focus-within {
 			background-color: var(--color-neutral-800);
 		}
 
@@ -384,11 +390,12 @@ const { headings } = await post.render();
 
 <script>
 	function setupStickyToc() {
-		const stickyElement = document.querySelector(".sticky-element") as HTMLElement;
+		const stickyElement = document.querySelector(
+			".sticky-element",
+		) as HTMLElement;
 		const asideContainer = document.querySelector(".aside-container-left");
 
 		if (stickyElement && asideContainer) {
-			// Function to update width
 			const updateWidth = () => {
 				const asideWidth = asideContainer.getBoundingClientRect().width;
 				stickyElement.style.setProperty(
@@ -397,7 +404,6 @@ const { headings } = await post.render();
 				);
 			};
 
-			// Function to update offset
 			const updateOffset = () => {
 				return stickyElement.offsetTop;
 			};
@@ -405,7 +411,6 @@ const { headings } = await post.render();
 			let stickyOffset = updateOffset();
 
 			const handleScroll = () => {
-				// Recalculate offset if element is not fixed
 				if (!stickyElement.classList.contains("fixed")) {
 					stickyOffset = updateOffset();
 				}
@@ -417,19 +422,15 @@ const { headings } = await post.render();
 				}
 			};
 
-			// Function to handle resize
 			const handleResize = () => {
-				// Remove fixed class temporarily to get correct offset
 				stickyElement.classList.remove("fixed");
 				updateWidth();
 				stickyOffset = updateOffset();
-				handleScroll(); // Re-check scroll position with new offset
+				handleScroll();
 			};
 
-			// Initial setup
 			updateWidth();
 
-			// Add event listeners
 			window.addEventListener("scroll", handleScroll);
 			window.addEventListener("resize", handleResize);
 
@@ -440,11 +441,9 @@ const { headings } = await post.render();
 		}
 	}
 
-	// Run on initial page load
 	setupStickyToc();
 
-	// Run after view transitions
-	document.addEventListener('astro:after-swap', () => {
+	document.addEventListener("astro:after-swap", () => {
 		setupStickyToc();
 	});
 

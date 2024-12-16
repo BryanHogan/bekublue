@@ -25,6 +25,7 @@ const reviewCollection = defineCollection({
         pubDate: z.date(),
         tags: z.array(z.string()),
         rating: z.number().max(5, "Max rating is 5.").min(0, "Minimum rating is 0"),
+        apititle: z.string().optional(),
     })
 });
 
