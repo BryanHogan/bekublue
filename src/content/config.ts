@@ -1,4 +1,4 @@
-import { z, defineCollection } from 'astro:content';
+import { z, defineCollection, reference } from 'astro:content';
 
 const reviewCollection = defineCollection({
     type: 'content',
@@ -24,6 +24,7 @@ const reviewCollection = defineCollection({
         tags: z.array(z.string()),
         rating: z.number().max(5, "Max rating is 5.").min(0, "Minimum rating is 0"),
         apititle: z.string().optional(),
+        similarGames: z.array(reference('reviews')).optional(),
     })
 });
 

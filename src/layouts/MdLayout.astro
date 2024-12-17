@@ -1,6 +1,7 @@
 ---
-import type { getCollection, CollectionEntry } from "astro:content";
-import { getEntry } from "astro:content";
+import type {CollectionEntry } from "astro:content";
+import { getCollection } from "astro:content";
+import { getEntry, getEntries } from "astro:content";
 import BaseLayout from "../layouts/BaseLayout.astro";
 import { Image } from "astro:assets";
 import { generateToC } from "../components/toc/generateToC";
@@ -32,15 +33,18 @@ const gamePriceData = gamePrices.find((game: any) => game.title === GAME_TITLE);
 
 const currentPrice = gamePriceData ? gamePriceData.currentPrice : "Unavailable";
 const cheapestPriceEver = gamePriceData ? gamePriceData.cheapestPriceEver : "Unavailable";
-const steamLink = gamePriceData.steamStoreLink || null;
+const steamLink = gamePriceData?.steamStoreLink || null;
 const gogLink = gamePriceData?.gog?.gogStoreLink || null;
 
 // RAWG API CALL
 const { platforms, publishers } = await fetchGameDataByTitle(GAME_TITLE);
 
-const authorName = post.data.author?.includes("Bryan@BryanHogan.com") 
-    ? "Bryan Hogan" 
-    : post.data.author || "Unknown Author";
+const authorName = post.data.author?.includes("Bryan@BryanHogan.com") ? "Bryan Hogan" : post.data.author || "Unknown Author";
+
+let similarGames = [];
+if (post.data.similarGames) {
+  similarGames = await getEntries(post.data.similarGames);
+}
 ---
 
 <BaseLayout title={post.data.title} description={post.data.description}>
@@ -129,9 +133,11 @@ const authorName = post.data.author?.includes("Bryan@BryanHogan.com")
 				</main>
 			</div>
 			<aside class="aside-container-right">
+				{similarGames > 0 &&
 				<SideCard title="Similar Games">
 					<ul role="list" class="similar-games-list">
-						<li>
+						{similarGames.map((post: any) => (
+							<li>
 							<GameCard
 								title={post.data.title}
 								description={post.data.description}
@@ -139,18 +145,11 @@ const authorName = post.data.author?.includes("Bryan@BryanHogan.com")
 								cover={post.data.cover}
 								borderColor="var(--color-neutral-500)"
 							/>
-						</li>
-						<li>
-							<GameCard
-								title={post.data.title}
-								description={post.data.description}
-								link={`/games/${post.slug}`}
-								cover={post.data.cover}
-								borderColor="var(--color-neutral-500)"
-							/>
-						</li>
+							</li>
+						  ))}
 					</ul>
 				</SideCard>
+				}
 				<SideCard title="Relevant Blog Posts">
 					<ul role="list" class="relevant-blog-posts-list">
 						<li>
