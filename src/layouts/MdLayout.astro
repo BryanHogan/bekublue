@@ -32,8 +32,8 @@ const gamePriceData = gamePrices.find((game: any) => game.title === GAME_TITLE);
 
 const currentPrice = gamePriceData ? gamePriceData.currentPrice : "Unavailable";
 const cheapestPriceEver = gamePriceData ? gamePriceData.cheapestPriceEver : "Unavailable";
-const steamLink = gamePriceData ? gamePriceData.steamStoreLink : null;
-const gogLink = gamePriceData ? gamePriceData.gog.gogStoreLink : null;
+const steamLink = gamePriceData.steamStoreLink || null;
+const gogLink = gamePriceData?.gog?.gogStoreLink || null;
 
 // RAWG API CALL
 const { platforms, publishers } = await fetchGameDataByTitle(GAME_TITLE);
@@ -56,24 +56,30 @@ const authorName = post.data.author?.includes("Bryan@BryanHogan.com")
 						<p><small>Publisher</small></p>
 						<p>{publishers.length > 0 ? publishers.join(", ") : "Unavailable"}</p>
 					</SideCard>
+					{ (currentPrice && cheapestPriceEver) &&
 					<SideCard title="Price">
 						<p><small>Current price</small></p>
 						<p style="padding-bottom: 0.375em;">{currentPrice}$</p>
 						<p><small>All time low</small></p>
 						<p style="padding-bottom: 0.375em;">{cheapestPriceEver}$</p>
 					</SideCard>
+					}
+					{ steamLink &&
 					<div class="store-links-container">
 						<a href={steamLink} target="_blank">
 							<div>
 								<Image src={steamIcon} alt="Steam store icon." />
 							</div>
 						</a>
+						{ gogLink &&
 						<a href={gogLink} target="_blank">
 							<div>
 								<Image src={gogIcon} alt="GOG Galaxy store icon." />
 							</div>
 						</a>
+						}
 					</div>
+					}
 					<SideCard title="Tags">
 						<p>Indie, Action, 2024, Pixel-style</p>
 					</SideCard>
