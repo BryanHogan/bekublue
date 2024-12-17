@@ -4,17 +4,16 @@ interface Props {
     description: string;
     link: string;
     cover: any;
-    coverAlt: string;
     borderColor?: string;
 }
-const { title, description, link, cover, coverAlt, borderColor = "var(--color-neutral-500)" } = Astro.props;
+const { title, description, link, cover, borderColor = "var(--color-neutral-500)" } = Astro.props;
 
 import { Image } from "astro:assets";
 ---
 
 <article>
     <a href={link}>
-        <Image src={cover} alt={coverAlt} class="game-header" />
+        <Image src={cover} alt="altremoval" class="game-header" />
         <div class="text-group">
             <h3>{title}</h3>
             <p>{description}</p>
