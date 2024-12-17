@@ -9,6 +9,10 @@ import SideCard from "../components/SideCard.astro";
 import GameCard from "../components/GameCard.astro";
 import TableOfContentsList from "../components/toc/TableOfContentsList.astro";
 import { Icons } from "../components/Icons";
+import { fetchGameDataByTitle } from "../utils/rawgapi";
+
+import steamIcon from "../assets/icons/Steam-Icon.svg"
+import gogIcon from "../assets/icons/GOG-Icon.svg"
 
 const tinyCardReview = await getEntry("reviews", "cult-of-the-lamb");
 
@@ -18,57 +22,24 @@ interface Props {
 const { post } = Astro.props;
 const { headings } = await post.render();
 
+const GAME_TITLE = 'apititle' in post.data ? post.data.apititle : post.data.title;
+
 // GAME PRICES API CALL cheapshark
 const response = await fetch('http://localhost:4321/api/game-prices.json');
 const gamePrices = await response.json();
 
+const gamePriceData = gamePrices.find((game: any) => game.title === GAME_TITLE);
+
+const currentPrice = gamePriceData ? gamePriceData.currentPrice : "Unavailable";
+const cheapestPriceEver = gamePriceData ? gamePriceData.cheapestPriceEver : "Unavailable";
+const steamLink = gamePriceData ? gamePriceData.steamStoreLink : null;
+const gogLink = gamePriceData ? gamePriceData.gog.gogStoreLink : null;
+
 // RAWG API CALL
-const API_KEY = import.meta.env.RAWG;
-const GAME_TITLE = post.data.apititle ?? post.data.title;
-
-const fetchGameDataByTitle = async () => {
-  try {
-    const searchResponse = await fetch(
-      `https://api.rawg.io/api/games?search=${encodeURIComponent(GAME_TITLE)}&key=${API_KEY}`
-    );
-
-    if (!searchResponse.ok) {
-      console.error("Error fetching game data:", searchResponse.statusText);
-      return { platforms: [], publishers: [] };
-    }
-
-    const searchData = await searchResponse.json();
-    console.log("RAWG API Response:", searchData); // Debugging the structure
-
-    if (searchData.results && searchData.results.length > 0) {
-      const game = searchData.results[0]; // First search result
-
-      const platforms = game.parent_platforms
-        ? game.parent_platforms.map((parent: any) => parent.platform.name)
-        : [];
-
-      const publishers = game.publishers
-        ? game.publishers.map((pub: any) => pub.name)
-        : [];
-
-      return { platforms, publishers };
-    } else {
-      console.warn("No results found for the game title.");
-      return { platforms: [], publishers: [] };
-    }
-  } catch (error) {
-    console.error("Error fetching or parsing game data:", error);
-    return { platforms: [], publishers: [] };
-  }
-};
-
-const { platforms, publishers } = await fetchGameDataByTitle();
-
+const { platforms, publishers } = await fetchGameDataByTitle(GAME_TITLE);
 ---
 
 <BaseLayout title={post.data.title} description={post.data.description}>
-	<p>Price: {gamePrices.length}</p>
-	<p>No</p>
 	<div class="base-layout">
 		<div class="post-container">
 			<div class="post-container-left-middle">
@@ -78,28 +49,26 @@ const { platforms, publishers } = await fetchGameDataByTitle();
 						<p style="padding-bottom: 0.375em;">
 							{platforms.length > 0 ? platforms.join(", ") : "Unavailable"}
 						</p>
-						<p><small>Release date</small></p>
-						<p style="padding-bottom: 0.375em;">May 5, 2023</p>
 						<p><small>Publisher</small></p>
 						<p>{publishers.length > 0 ? publishers.join(", ") : "Unavailable"}</p>
 					</SideCard>
 					<SideCard title="Price">
-						<p><small>Current price (Steam)</small></p>
-						<p style="padding-bottom: 0.375em;">15,50€</p>
-						<p><small>Current most low</small></p>
-						<p style="padding-bottom: 0.375em;">14,52€</p>
+						<p><small>Current price</small></p>
+						<p style="padding-bottom: 0.375em;">{currentPrice}$</p>
 						<p><small>All time low</small></p>
-						<p>8,89€</p>
+						<p style="padding-bottom: 0.375em;">{cheapestPriceEver}$</p>
 					</SideCard>
-					<div>
-						<Icon name="star" label="icon" size="1.5rem" /><p>
-							Steam
-						</p>
-					</div>
-					<div>
-						<Icon name="star" label="icon" size="1.5rem" /><p>
-							GOG
-						</p>
+					<div class="store-links-container">
+						<a href={steamLink} target="_blank">
+							<div>
+								<Image src={steamIcon} alt="Steam store icon." />
+							</div>
+						</a>
+						<a href={gogLink} target="_blank">
+							<div>
+								<Image src={gogIcon} alt="GOG Galaxy store icon." />
+							</div>
+						</a>
 					</div>
 					<SideCard title="Tags">
 						<p>Indie, Action, 2024, Pixel-style</p>
@@ -327,6 +296,21 @@ const { platforms, publishers } = await fetchGameDataByTitle();
 		padding-inline: var(--space-s);
 		padding-block: var(--space-s);
 		gap: var(--space-s);
+	}
+
+	.store-links-container {
+		display: flex;
+		flex-direction: row;
+		gap: var(--space-m);
+		a {
+			background-color: var(--color-neutral-800);
+			flex-grow: 1;
+			display: flex;
+			justify-content: center;
+			padding-block: var(--space-m);
+			border-radius: var(--border-radius-m);
+
+		}
 	}
 
 	@media only screen and (min-width: 1350px) {
