@@ -18,14 +18,57 @@ interface Props {
 const { post } = Astro.props;
 const { headings } = await post.render();
 
-const response = await fetch('http://localhost:4321/api/game-prices.json'); // Fetch the JSON file
-const gamePrices = await response.json(); // Parse the JSON data
+// GAME PRICES API CALL cheapshark
+const response = await fetch('http://localhost:4321/api/game-prices.json');
+const gamePrices = await response.json();
+
+// RAWG API CALL
+const API_KEY = import.meta.env.RAWG;
+const GAME_TITLE = post.data.apititle ?? post.data.title;
+
+const fetchGameDataByTitle = async () => {
+  try {
+    const searchResponse = await fetch(
+      `https://api.rawg.io/api/games?search=${encodeURIComponent(GAME_TITLE)}&key=${API_KEY}`
+    );
+
+    if (!searchResponse.ok) {
+      console.error("Error fetching game data:", searchResponse.statusText);
+      return { platforms: [], publishers: [] };
+    }
+
+    const searchData = await searchResponse.json();
+    console.log("RAWG API Response:", searchData); // Debugging the structure
+
+    if (searchData.results && searchData.results.length > 0) {
+      const game = searchData.results[0]; // First search result
+
+      const platforms = game.parent_platforms
+        ? game.parent_platforms.map((parent: any) => parent.platform.name)
+        : [];
+
+      const publishers = game.publishers
+        ? game.publishers.map((pub: any) => pub.name)
+        : [];
+
+      return { platforms, publishers };
+    } else {
+      console.warn("No results found for the game title.");
+      return { platforms: [], publishers: [] };
+    }
+  } catch (error) {
+    console.error("Error fetching or parsing game data:", error);
+    return { platforms: [], publishers: [] };
+  }
+};
+
+const { platforms, publishers } = await fetchGameDataByTitle();
+
 ---
 
 <BaseLayout title={post.data.title} description={post.data.description}>
 	<p>Price: {gamePrices.length}</p>
 	<p>No</p>
-	
 	<div class="base-layout">
 		<div class="post-container">
 			<div class="post-container-left-middle">
@@ -33,12 +76,12 @@ const gamePrices = await response.json(); // Parse the JSON data
 					<SideCard title="Game Info">
 						<p><small>Platforms</small></p>
 						<p style="padding-bottom: 0.375em;">
-							PC, Xbox, Switch...
+							{platforms.length > 0 ? platforms.join(", ") : "Unavailable"}
 						</p>
 						<p><small>Release date</small></p>
 						<p style="padding-bottom: 0.375em;">May 5, 2023</p>
-						<p><small>Developer</small></p>
-						<p>Someone</p>
+						<p><small>Publisher</small></p>
+						<p>{publishers.length > 0 ? publishers.join(", ") : "Unavailable"}</p>
 					</SideCard>
 					<SideCard title="Price">
 						<p><small>Current price (Steam)</small></p>
