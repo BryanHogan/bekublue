@@ -133,7 +133,7 @@ if (post.data.similarGames) {
 				</main>
 			</div>
 			<aside class="aside-container-right">
-				{similarGames > 0 &&
+				{(similarGames.length > 0) &&
 				<SideCard title="Similar Games">
 					<ul role="list" class="similar-games-list">
 						{similarGames.map((post: any) => (
