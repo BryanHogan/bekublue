@@ -11,5 +11,8 @@ export default defineConfig({
 	integrations: [mdx(), sitemap()],
 	server: {
 		host: true
-	  }
+	  },
+	legacy: {
+		collections: true
+	}
 });

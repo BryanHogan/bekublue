@@ -11,7 +11,7 @@ const { review } = Astro.props;
     <a href={`/games/${review.slug}`}>
         <Image
             src={review.data.cover as ImageMetadata}
-            alt={review.data.coverAlt}
+            alt={review.data.title + " cover"}
             class="image"
         />
         <div>

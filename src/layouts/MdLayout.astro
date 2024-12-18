@@ -41,13 +41,15 @@ const { platforms, developers } = await fetchGameDataByTitle(GAME_TITLE);
 
 const authorName = post.data.author?.includes("Bryan@BryanHogan.com") ? "Bryan Hogan" : post.data.author || "Unknown Author";
 
-let similarGames: any = [];
-if (post.data.similarGames) {
+
+
+let similarGames = []
+if (post.collection === "reviews") {
 	similarGames = await getEntries(post.data.similarGames);
 }
 
 let relevantBlogPosts = [];
-if (post.data.relevantBlogPosts) {
+if (post.collection === "reviews") {
 	relevantBlogPosts = await getEntries(post.data.relevantBlogPosts);
 }
 
