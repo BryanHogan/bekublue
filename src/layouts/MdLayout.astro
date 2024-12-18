@@ -134,13 +134,13 @@ const allPosts = [...blogPosts, ...reviewPosts].sort(
 				>
 					<Image
 						src={post.data.hero as ImageMetadata}
-						alt="altremoval"
+						alt={post.data.title + " cover"}
 						class="hero-image"
 					/>
 					<div class="cover-container">
 						<Image
 							src={post.data.cover as ImageMetadata}
-							alt="altremoval"
+							alt={post.data.title + " cover"}
 							class="cover-image"
 						/>
 					</div>

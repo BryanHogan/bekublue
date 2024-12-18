@@ -13,7 +13,7 @@ import { Image } from "astro:assets";
 
 <article>
     <a href={link}>
-        <Image src={cover} alt="altremoval" class="game-header" />
+        <Image src={cover} alt={title + " cover"} class="game-header" />
         <div class="text-group">
             <h3>{title}</h3>
             <p>{description}</p>

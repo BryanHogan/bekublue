@@ -7,7 +7,7 @@
 </script>
 
 <form class="form-container margin-inline-auto">
-    <h2>Filter</h2>
+    <h2 style="font-size: var(--text-size-2xl)">Filter</h2>
     <label>
         <input type="checkbox" bind:checked={showBlogPosts} />
         Show Blog Posts

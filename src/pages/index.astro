@@ -54,7 +54,7 @@ const chronologicallySortedAll = [...allEntries].sort(
 							<p>{featuredArticle.data.description}</p>
 							<AButton
 								title="Read more"
-								href="#"
+								href={`/${featuredArticle.collection === "reviews" ? "games" : featuredArticle.collection === "posts" ? "blog" : ""}/${featuredArticle.slug}`}
 								inlineAuto={true}
 							/>
 						</div>
@@ -75,7 +75,7 @@ const chronologicallySortedAll = [...allEntries].sort(
 						))
 					}
 					<li class="see-more-button">
-						<a href="#"
+						<a href="/content"
 							><div>
 								<Icon
 									name="rightcaret"
@@ -101,7 +101,7 @@ const chronologicallySortedAll = [...allEntries].sort(
 						))
 					}
 					<li class="see-more-button">
-						<a href="#"
+						<a href="/content"
 							><div>
 								<Icon
 									name="rightcaret"
@@ -127,7 +127,7 @@ const chronologicallySortedAll = [...allEntries].sort(
 						))
 					}
 					<li class="see-more-button">
-						<a href="#"
+						<a href="/content"
 							><div>
 								<Icon
 									name="rightcaret"
@@ -145,24 +145,23 @@ const chronologicallySortedAll = [...allEntries].sort(
 					<div class="">
 						<h3>Game Reviews</h3>
 						<ul role="list">
-							<li><a href="#">Latest reviews</a></li>
-							<li><a href="#">Best rated</a></li>
+							<li><a href="/content">Latest reviews</a></li>
 						</ul>
 					</div>
 					<div class="">
 						<h3>Blog</h3>
 						<ul role="list">
-							<li><a href="#">Latest posts</a></li>
-							<li><a href="#">Game design</a></li>
+							<li><a href="/content">Latest posts</a></li>
 						</ul>
 					</div>
+					<!-- 
 					<div class="">
 						<h3>More</h3>
 						<ul role="list">
 							<li><a href="#">Hidden gems</a></li>
-							<li><a href="#">Pokemon-likes</a></li>
 						</ul>
 					</div>
+					-->
 				</nav>
 				<nav class="aside-navigation-container updates-container">
 					<h2 class="text-align-center">Last Updates</h2>
