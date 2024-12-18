@@ -15,8 +15,6 @@ import { fetchGameDataByTitle } from "../utils/rawgapi";
 import steamIcon from "../assets/icons/Steam-Icon.svg"
 import gogIcon from "../assets/icons/GOG-Icon.svg"
 
-const tinyCardReview = await getEntry("reviews", "cult-of-the-lamb");
-
 interface Props {
 	post: CollectionEntry<"reviews"> | CollectionEntry<"posts">;
 }
@@ -44,12 +42,12 @@ const authorName = post.data.author?.includes("Bryan@BryanHogan.com") ? "Bryan H
 
 
 let similarGames = []
-if (post.collection === "reviews") {
+if (post.collection === "reviews" && post.data.similarGames) {
 	similarGames = await getEntries(post.data.similarGames);
 }
 
 let relevantBlogPosts = [];
-if (post.collection === "reviews") {
+if (post.collection === "reviews" && post.data.relevantBlogPosts) {
 	relevantBlogPosts = await getEntries(post.data.relevantBlogPosts);
 }
 
@@ -156,7 +154,7 @@ const allPosts = [...blogPosts, ...reviewPosts].sort(
 				{(similarGames.length > 0) &&
 					<SideCard title="Similar Games">
 						<ul role="list" class="similar-games-list">
-							{similarGames.map((post: any) => (
+							{similarGames.map((post) => (
 								<li>
 								<GameCard
 									title={post.data.title}
@@ -173,7 +171,7 @@ const allPosts = [...blogPosts, ...reviewPosts].sort(
 				{(relevantBlogPosts.length > 0) &&
 					<SideCard title="Relevant Blog Posts">
 						<ul role="list" class="relevant-blog-posts-list">
-							{relevantBlogPosts.map((post: any) => (
+							{relevantBlogPosts.map((post) => (
 								<li>
 									<GameCard
 										title={post.data.title}
