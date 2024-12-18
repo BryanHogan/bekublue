@@ -1,5 +1,5 @@
 ---
-import type {CollectionEntry } from "astro:content";
+import type { CollectionEntry } from "astro:content";
 import { getCollection } from "astro:content";
 import { getEntry, getEntries } from "astro:content";
 import BaseLayout from "../layouts/BaseLayout.astro";
@@ -43,8 +43,28 @@ const authorName = post.data.author?.includes("Bryan@BryanHogan.com") ? "Bryan H
 
 let similarGames = [];
 if (post.data.similarGames) {
-  similarGames = await getEntries(post.data.similarGames);
+	similarGames = await getEntries(post.data.similarGames);
 }
+
+let relevantBlogPosts = [];
+if (post.data.relevantBlogPosts) {
+	relevantBlogPosts = await getEntries(post.data.relevantBlogPosts);
+}
+
+const [blogPosts, reviewPosts] = await Promise.all([
+	getCollection("posts"),
+	getCollection("reviews"),
+]);
+const allPosts = [...blogPosts, ...reviewPosts].sort(
+	(a, b) => b.data.pubDate.getTime() - a.data.pubDate.getTime(),
+);
+
+function isReviewEntry(
+	post: CollectionEntry<"reviews"> | CollectionEntry<"posts">,
+): post is CollectionEntry<"reviews"> {
+	return (post as CollectionEntry<"reviews">).data.unit !== undefined;
+}
+
 ---
 
 <BaseLayout title={post.data.title} description={post.data.description}>
@@ -134,55 +154,65 @@ if (post.data.similarGames) {
 			</div>
 			<aside class="aside-container-right">
 				{(similarGames.length > 0) &&
-				<SideCard title="Similar Games">
-					<ul role="list" class="similar-games-list">
-						{similarGames.map((post: any) => (
-							<li>
-							<GameCard
-								title={post.data.title}
-								description={post.data.description}
-								link={`/games/${post.slug}`}
-								cover={post.data.cover}
-								borderColor="var(--color-neutral-500)"
-							/>
-							</li>
-						  ))}
-					</ul>
-				</SideCard>
+					<SideCard title="Similar Games">
+						<ul role="list" class="similar-games-list">
+							{similarGames.map((post: any) => (
+								<li>
+								<GameCard
+									title={post.data.title}
+									description={post.data.description}
+									link={`/games/${post.slug}`}
+									cover={post.data.cover}
+									borderColor="var(--color-neutral-500)"
+								/>
+								</li>
+							  ))}
+						</ul>
+					</SideCard>
 				}
-				<SideCard title="Relevant Blog Posts">
-					<ul role="list" class="relevant-blog-posts-list">
-						<li>
-							<GameCard
-								title={post.data.title}
-								description={post.data.description}
-								link={`/games/${post.slug}`}
-								cover={post.data.cover}
-								borderColor="var(--color-neutral-500)"
-							/>
-						</li>
-					</ul>
-				</SideCard>
+				{(relevantBlogPosts.length > 0) &&
+					<SideCard title="Relevant Blog Posts">
+						<ul role="list" class="relevant-blog-posts-list">
+							{relevantBlogPosts.map((post: any) => (
+								<li>
+									<GameCard
+										title={post.data.title}
+										description={post.data.description}
+										link={`/blog/${post.slug}`}
+										cover={post.data.cover}
+										borderColor="var(--color-neutral-500)"
+									/>
+								</li>
+							  ))}
+						</ul>
+					</SideCard>
+				}
 				<SideCard title="Latest Posts">
 					<ul role="list" class="lastest-posts-list">
-						<li>
-							<GameCard
-								title={post.data.title}
-								description={post.data.description}
-								link={`/games/${post.slug}`}
-								cover={post.data.cover}
-								borderColor="var(--color-neutral-500)"
-							/>
-						</li>
-						<li>
-							<GameCard
-								title={post.data.title}
-								description={post.data.description}
-								link={`/games/${post.slug}`}
-								cover={post.data.cover}
-								borderColor="var(--color-neutral-500)"
-							/>
-						</li>
+						{
+							allPosts.slice(0, 3).map((post) => (
+								<li>
+									{isReviewEntry(post) ? (
+										<GameCard
+											title={post.data.title}
+											description={post.data.description}
+											link={`/games/${post.slug}`}
+											cover={post.data.cover}
+											borderColor="var(--color-neutral-500)"
+										/>
+									) : (
+									// @ts-ignore
+									<GameCard
+										title={post.data.title}
+										description={post.data.description}
+										link={`/blog/${post.slug}`}
+										cover={post.data.cover}
+										borderColor="var(--color-neutral-500)"
+									/>
+									)}
+								</li>
+							))
+						}
 					</ul>
 				</SideCard>
 				<SideCard title="E-Mail Newsletter">

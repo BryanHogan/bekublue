@@ -25,6 +25,7 @@ const reviewCollection = defineCollection({
         rating: z.number().max(5, "Max rating is 5.").min(0, "Minimum rating is 0"),
         apititle: z.string().optional(),
         similarGames: z.array(reference('reviews')).optional(),
+        relevantBlogPosts: z.array(reference('posts')).optional(),
     })
 });
 
