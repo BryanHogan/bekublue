@@ -62,7 +62,7 @@ const allPosts = [...blogPosts, ...reviewPosts].sort(
 function isReviewEntry(
 	post: CollectionEntry<"reviews"> | CollectionEntry<"posts">,
 ): post is CollectionEntry<"reviews"> {
-	return (post as CollectionEntry<"reviews">).data.unit !== undefined;
+	return post === "reviews";
 }
 
 ---
@@ -72,37 +72,41 @@ function isReviewEntry(
 		<div class="post-container">
 			<div class="post-container-left-middle">
 				<aside class="aside-container-left">
-					<SideCard title="Game Info">
-						<p><small>Platforms</small></p>
-						<p style="padding-bottom: 0.375em;">
-							{platforms.length > 0 ? platforms.join(", ") : "Unavailable"}
-						</p>
-						<p><small>Developers</small></p>
-						<p>{developers.length > 0 ? developers.join(", ") : "Unavailable"}</p>
-					</SideCard>
-					{ (currentPrice && cheapestPriceEver) &&
-					<SideCard title="Price">
-						<p><small>Current price</small></p>
-						<p style="padding-bottom: 0.375em;">{currentPrice}$</p>
-						<p><small>All time low</small></p>
-						<p style="padding-bottom: 0.375em;">{cheapestPriceEver}$</p>
-					</SideCard>
-					}
-					{ steamLink &&
-					<div class="store-links-container">
-						<a href={steamLink} target="_blank">
-							<div>
-								<Image src={steamIcon} alt="Steam store icon." />
-							</div>
-						</a>
-						{ gogLink &&
-						<a href={gogLink} target="_blank">
-							<div>
-								<Image src={gogIcon} alt="GOG Galaxy store icon." />
-							</div>
-						</a>
+					{ post.collection === "reviews" &&
+					<>
+						<SideCard title="Game Info">
+							<p><small>Platforms</small></p>
+							<p style="padding-bottom: 0.375em;">
+								{platforms.length > 0 ? platforms.join(", ") : "Unavailable"}
+							</p>
+							<p><small>Developers</small></p>
+							<p>{developers.length > 0 ? developers.join(", ") : "Unavailable"}</p>
+						</SideCard>
+						{ (currentPrice && cheapestPriceEver) &&
+						<SideCard title="Price">
+							<p><small>Current price</small></p>
+							<p style="padding-bottom: 0.375em;">{currentPrice}$</p>
+							<p><small>All time low</small></p>
+							<p style="padding-bottom: 0.375em;">{cheapestPriceEver}$</p>
+						</SideCard>
 						}
-					</div>
+						{ steamLink &&
+						<div class="store-links-container">
+							<a href={steamLink} target="_blank">
+								<div>
+									<Image src={steamIcon} alt="Steam store icon." />
+								</div>
+							</a>
+							{ gogLink &&
+							<a href={gogLink} target="_blank">
+								<div>
+									<Image src={gogIcon} alt="GOG Galaxy store icon." />
+								</div>
+							</a>
+							}
+						</div>
+						}
+					</>
 					}
 					<SideCard title="Tags">
 						<p>Indie, Action, 2024, Pixel-style</p>
@@ -192,7 +196,7 @@ function isReviewEntry(
 						{
 							allPosts.slice(0, 3).map((post) => (
 								<li>
-									{isReviewEntry(post) ? (
+									{post.collection === "reviews" ? (
 										<GameCard
 											title={post.data.title}
 											description={post.data.description}
@@ -365,14 +369,14 @@ function isReviewEntry(
 		flex-direction: column;
 		input[type=email] {
 			background-color: var(--color-neutral-700);
-			border: 1px solid var(--color-neutral-300);
+			border: 1px solid var(--color-neutral-500);
 			border-radius: var(--border-radius-s);
 		}
 		input[type=submit] {
 			background-color: var(--color-accent-900);
 			width: 60%;
 			margin-inline: auto;
-			border: 1px solid var(--color-neutral-600);
+			border: 1px solid var(--color-neutral-700);
 			border-radius: var(--border-radius-s);
 			padding-block: 0.25rem;
 			&:hover {
