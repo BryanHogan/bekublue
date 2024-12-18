@@ -59,12 +59,6 @@ const allPosts = [...blogPosts, ...reviewPosts].sort(
 	(a, b) => b.data.pubDate.getTime() - a.data.pubDate.getTime(),
 );
 
-function isReviewEntry(
-	post: CollectionEntry<"reviews"> | CollectionEntry<"posts">,
-): post is CollectionEntry<"reviews"> {
-	return post === "reviews";
-}
-
 ---
 
 <BaseLayout title={post.data.title} description={post.data.description}>

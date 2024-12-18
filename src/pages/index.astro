@@ -166,7 +166,7 @@ const chronologicallySortedAll = [...allEntries].sort(
 				</nav>
 				<nav class="aside-navigation-container updates-container">
 					<h2 class="text-align-center">Last Updates</h2>
-					<ul style="padding-left: 0;" class="margin-inline-auto">
+					<ul style="padding-left: 1rem;" class="margin-inline-auto">
 						{
 							chronologicallySortedAll.slice(0, 3).map((post) => (
 								<li>
@@ -176,7 +176,6 @@ const chronologicallySortedAll = [...allEntries].sort(
 										>
 											{post.data.title}
 										</a>
-										and released one some day.
 									</p>
 								</li>
 							))
