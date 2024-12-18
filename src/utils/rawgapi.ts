@@ -7,7 +7,7 @@ const fetchGameDataByTitle = async (gameTitle: string) => {
 
         if (!searchResponse.ok) {
             console.error("Error fetching game data:", searchResponse.statusText);
-            return { platforms: [], publishers: [] };
+            return { platforms: [], developers: [] }; // Updated to return developers
         }
 
         const searchData = await searchResponse.json();
@@ -21,7 +21,7 @@ const fetchGameDataByTitle = async (gameTitle: string) => {
 
             if (!gameDetailsResponse.ok) {
                 console.error("Error fetching game details:", gameDetailsResponse.statusText);
-                return { platforms: [], publishers: [] };
+                return { platforms: [], developers: [] }; // Updated to return developers
             }
 
             const gameDetails = await gameDetailsResponse.json();
@@ -30,18 +30,18 @@ const fetchGameDataByTitle = async (gameTitle: string) => {
                 ? gameDetails.parent_platforms.map((parent: any) => parent.platform.name)
                 : [];
 
-            const publishers = gameDetails.publishers
-                ? gameDetails.publishers.map((pub: any) => pub.name)
+            const developers = gameDetails.developers // Updated to fetch developers
+                ? gameDetails.developers.map((dev: any) => dev.name)
                 : [];
 
-            return { platforms, publishers };
+            return { platforms, developers }; // Updated to return developers
         } else {
             console.warn("No results found for the game title.");
-            return { platforms: [], publishers: [] };
+            return { platforms: [], developers: [] }; // Updated to return developers
         }
     } catch (error) {
         console.error("Error fetching or parsing game data:", error);
-        return { platforms: [], publishers: [] };
+        return { platforms: [], developers: [] }; // Updated to return developers
     }
 };
 

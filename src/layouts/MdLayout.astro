@@ -37,7 +37,7 @@ const steamLink = gamePriceData?.steamStoreLink || null;
 const gogLink = gamePriceData?.gog?.gogStoreLink || null;
 
 // RAWG API CALL
-const { platforms, publishers } = await fetchGameDataByTitle(GAME_TITLE);
+const { platforms, developers } = await fetchGameDataByTitle(GAME_TITLE);
 
 const authorName = post.data.author?.includes("Bryan@BryanHogan.com") ? "Bryan Hogan" : post.data.author || "Unknown Author";
 
@@ -77,8 +77,8 @@ function isReviewEntry(
 						<p style="padding-bottom: 0.375em;">
 							{platforms.length > 0 ? platforms.join(", ") : "Unavailable"}
 						</p>
-						<p><small>Publisher</small></p>
-						<p>{publishers.length > 0 ? publishers.join(", ") : "Unavailable"}</p>
+						<p><small>Developers</small></p>
+						<p>{developers.length > 0 ? developers.join(", ") : "Unavailable"}</p>
 					</SideCard>
 					{ (currentPrice && cheapestPriceEver) &&
 					<SideCard title="Price">
