@@ -19,8 +19,6 @@ const { headings } = await post.render();
 
 const authorName = post.data.author?.includes("Bryan@BryanHogan.com") ? "Bryan Hogan" : post.data.author || "Unknown Author";
 
-
-
 let similarGames = []
 if (post.collection === "reviews" && post.data.similarGames) {
 	similarGames = await getEntries(post.data.similarGames);
