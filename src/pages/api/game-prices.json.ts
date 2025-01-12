@@ -31,7 +31,6 @@ export const GET: APIRoute = async () => {
           const existsOnSteam = !!steamAppID;
 
           return {
-            /*
             title: title,
             currentPrice: game.cheapest,
             cheapestPriceEver: await getCheapestPriceEver(game.gameID),
@@ -40,7 +39,6 @@ export const GET: APIRoute = async () => {
             steamStoreLink,
             existsOnSteam,
             gog: gogInfo,
-            */
           };
         } else {
           return { title: title, error: 'No data found' };
