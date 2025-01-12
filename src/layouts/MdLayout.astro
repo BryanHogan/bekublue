@@ -10,32 +10,12 @@ import SideCard from "../components/SideCard.astro";
 import GameCard from "../components/GameCard.astro";
 import TableOfContentsList from "../components/toc/TableOfContentsList.astro";
 import { Icons } from "../components/Icons";
-import { fetchGameDataByTitle } from "../utils/rawgapi";
-
-import steamIcon from "../assets/icons/Steam-Icon.svg"
-import gogIcon from "../assets/icons/GOG-Icon.svg"
 
 interface Props {
 	post: CollectionEntry<"reviews"> | CollectionEntry<"posts">;
 }
 const { post } = Astro.props;
 const { headings } = await post.render();
-
-const GAME_TITLE = 'apititle' in post.data ? post.data.apititle : post.data.title;
-
-// GAME PRICES API CALL cheapshark
-const response = await fetch('http://localhost:4321/api/game-prices.json');
-const gamePrices = await response.json();
-
-const gamePriceData = gamePrices.find((game: any) => game.title === GAME_TITLE);
-
-const currentPrice = gamePriceData ? gamePriceData.currentPrice : "Unavailable";
-const cheapestPriceEver = gamePriceData ? gamePriceData.cheapestPriceEver : "Unavailable";
-const steamLink = gamePriceData?.steamStoreLink || null;
-const gogLink = gamePriceData?.gog?.gogStoreLink || null;
-
-// RAWG API CALL
-const { platforms, developers } = await fetchGameDataByTitle(GAME_TITLE);
 
 const authorName = post.data.author?.includes("Bryan@BryanHogan.com") ? "Bryan Hogan" : post.data.author || "Unknown Author";
 
@@ -66,42 +46,6 @@ const allPosts = [...blogPosts, ...reviewPosts].sort(
 		<div class="post-container">
 			<div class="post-container-left-middle">
 				<aside class="aside-container-left">
-					{ post.collection === "reviews" &&
-					<>
-						<SideCard title="Game Info">
-							<p><small>Platforms</small></p>
-							<p style="padding-bottom: 0.375em;">
-								{platforms.length > 0 ? platforms.join(", ") : "Unavailable"}
-							</p>
-							<p><small>Developers</small></p>
-							<p>{developers.length > 0 ? developers.join(", ") : "Unavailable"}</p>
-						</SideCard>
-						{ (currentPrice && cheapestPriceEver) &&
-						<SideCard title="Price">
-							<p><small>Current price</small></p>
-							<p style="padding-bottom: 0.375em;">{currentPrice}$</p>
-							<p><small>All time low</small></p>
-							<p style="padding-bottom: 0.375em;">{cheapestPriceEver}$</p>
-						</SideCard>
-						}
-						{ steamLink &&
-						<div class="store-links-container">
-							<a href={steamLink} target="_blank">
-								<div>
-									<Image src={steamIcon} alt="Steam store icon." />
-								</div>
-							</a>
-							{ gogLink &&
-							<a href={gogLink} target="_blank">
-								<div>
-									<Image src={gogIcon} alt="GOG Galaxy store icon." />
-								</div>
-							</a>
-							}
-						</div>
-						}
-					</>
-					}
 					<SideCard title="Tags">
 						<p>Indie, Action, 2024, Pixel-style</p>
 					</SideCard>
