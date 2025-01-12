@@ -6,8 +6,6 @@ import sitemap from '@astrojs/sitemap';
 
 import svelte from '@astrojs/svelte';
 
-import cloudflare from '@astrojs/cloudflare';
-
 // https://astro.build/config
 export default defineConfig({
   site: 'https://beku.blue',
@@ -21,6 +19,4 @@ export default defineConfig({
   legacy: {
       collections: true
   },
-
-  adapter: cloudflare()
 });
