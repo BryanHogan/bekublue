@@ -1,14 +1,12 @@
 ---
 import BaseLayout from "../layouts/BaseLayout.astro";
-import { Image } from "astro:assets";
-import CultOfTheLamb from "../assets/images/games/Cult-Of-The-Lamb-Header.jpg";
 import GameCard from "../components/GameCard.astro";
-
-import { getEntry, getEntries, getCollection } from "astro:content";
+import { Image } from "astro:assets";
+import { getEntry, getCollection } from "astro:content";
 import Icon from "../components/Icon.astro";
 import AButton from "../components/AButton.astro";
-import type { ImageMetadata } from 'astro';
-const featuredArticle = (await getEntry("reviews", "cult-of-the-lamb"));
+import type { ImageMetadata } from "astro";
+const featuredArticle = await getEntry("reviews", "cult-of-the-lamb");
 const allEntriesReviews = await getCollection("reviews");
 const allEntriesBlog = await getCollection("posts");
 const allEntries = [...allEntriesReviews, ...allEntriesBlog];
@@ -26,70 +24,44 @@ const chronologicallySortedAll = [...allEntries].sort(
 
 <BaseLayout
 	title="All about Games | Beku.blue"
-	description="All about games. Finding high quality video games for you."
+	description="All about games. Finding high quality video games."
 >
 	<main class="base-layout">
-		<div class="all-content-container">
-			<div class="main-content-container">
-				<h1 class="visually-hidden">
-					Beku.blue game reviews and blog posts
-				</h1>
-				<article class="featured-article">
-					<Image
-						src={featuredArticle.data.hero as ImageMetadata}
-						alt={featuredArticle.data.title + " hero image"}
-						class="game-hero"
-					/>
-					<div class="featured-article-main-content">
-						<div class="featured-article-header-container">
-							<Image
-								src={featuredArticle.data.cover as ImageMetadata}
-								alt={featuredArticle.data.title + " cover image"}
-								class="game-header"
-							/>
-						</div>
-						<div class="featured-article-text">
-							<h2 class="">Featured Article</h2>
-							<h3>{featuredArticle.data.title}</h3>
-							<p>{featuredArticle.data.description}</p>
-							<AButton
-								title="Read more"
-								href={`/${featuredArticle.collection === "reviews" ? "games" : featuredArticle.collection === "posts" ? "blog" : ""}/${featuredArticle.slug}`}
-								inlineAuto={true}
-							/>
-						</div>
+		<div class="main-container">
+			<h1 class="visually-hidden">
+				Beku.blue game reviews and blog posts
+			</h1>
+			<article class="featured-article">
+				<Image
+					src={featuredArticle.data.hero as ImageMetadata}
+					alt={featuredArticle.data.title + " hero image"}
+					class="game-hero"
+				/>
+				<div class="featured-article-main-content">
+					<div class="featured-article-header-container">
+						<Image
+							src={featuredArticle.data.cover as ImageMetadata}
+							alt={featuredArticle.data.title + " cover image"}
+							class="game-header"
+						/>
 					</div>
-				</article>
+					<div class="featured-article-text">
+						<h2 class="">Featured Article</h2>
+						<h3>{featuredArticle.data.title}</h3>
+						<p>{featuredArticle.data.description}</p>
+						<AButton
+							title="Read more"
+							href={`/${featuredArticle.collection === "reviews" ? "games" : featuredArticle.collection === "posts" ? "blog" : ""}/${featuredArticle.slug}`}
+							inlineAuto={true}
+						/>
+					</div>
+				</div>
+			</article>
+			<section class="cards-section-container">
 				<h2>Latest Reviews</h2>
 				<ul class="article-container" role="list">
 					{
-						chronologicallySortedReviews.slice(0, 2).map((post) => (
-							<li>
-								<GameCard
-									title={post.data.title}
-									description={post.data.description}
-									link={`/games/${post.slug}`}
-									cover={post.data.cover}
-								/>
-							</li>
-						))
-					}
-					<li class="see-more-button">
-						<a href="/content"
-							><div>
-								<Icon
-									name="rightcaret"
-									size="1.5rem"
-									label="Arrow right"
-								/>
-							</div></a
-						>
-					</li>
-				</ul>
-				<h2>Best Rated</h2>
-				<ul class="article-container full-width" role="list">
-					{
-						bestRatedReviews.slice(0, 2).map((post) => (
+						chronologicallySortedReviews.slice(0, 3).map((post) => (
 							<li>
 								<GameCard
 									title={post.data.title}
@@ -113,9 +85,9 @@ const chronologicallySortedAll = [...allEntries].sort(
 					</li>
 				</ul>
 				<h2>Latest Blog Posts</h2>
-				<ul class="article-container full-width" role="list">
+				<ul class="article-container" role="list">
 					{
-						bestRatedReviews.slice(0, 2).map((post) => (
+						bestRatedReviews.slice(0, 3).map((post) => (
 							<li>
 								<GameCard
 									title={post.data.title}
@@ -138,236 +110,175 @@ const chronologicallySortedAll = [...allEntries].sort(
 						>
 					</li>
 				</ul>
-			</div>
-			<aside class="aside-container">
-				<nav class="aside-navigation-container">
-					<h2 class="text-align-center">Navigation</h2>
-					<div class="">
-						<h3>Game Reviews</h3>
-						<ul role="list">
-							<li><a href="/content">Latest reviews</a></li>
-						</ul>
-					</div>
-					<div class="">
-						<h3>Blog</h3>
-						<ul role="list">
-							<li><a href="/content">Latest posts</a></li>
-						</ul>
-					</div>
-					<!-- 
-					<div class="">
-						<h3>More</h3>
-						<ul role="list">
-							<li><a href="#">Hidden gems</a></li>
-						</ul>
-					</div>
-					-->
-				</nav>
-				<nav class="aside-navigation-container updates-container">
-					<h2 class="text-align-center">Last Updates</h2>
-					<ul style="padding-left: 1rem;" class="margin-inline-auto">
-						{
-							chronologicallySortedAll.slice(0, 3).map((post) => (
-								<li>
-									<p>
-										<a
-											href={`/${post.collection === "reviews" ? "games" : post.collection === "posts" ? "blog" : ""}/${post.slug}`}
-										>
-											{post.data.title}
-										</a>
-									</p>
-								</li>
-							))
-						}
+				<h2>Best Rated</h2>
+				<ul class="article-container" role="list">
+					{
+						bestRatedReviews.slice(0, 3).map((post) => (
+							<li>
+								<GameCard
+									title={post.data.title}
+									description={post.data.description}
+									link={`/games/${post.slug}`}
+									cover={post.data.cover}
+								/>
+							</li>
+						))
+					}
+					<li class="see-more-button">
+						<a href="/content"
+							><div>
+								<Icon
+									name="rightcaret"
+									size="1.5rem"
+									label="Arrow right"
+								/>
+							</div></a
+						>
+					</li>
+				</ul>
+			</section>
+			<section>
+				<nav class="bottom-nav-container">
+					<h2 class="visually-hidden">Navigation</h2>
+					<ul role="list">
+						<li>
+							<AButton
+								title="Latest reviews"
+								href="/content"
+								inlineAuto={true}
+							/>
+						</li>
+						<li>
+							<AButton
+								title="Latest blog posts"
+								href="/content"
+								inlineAuto={true}
+							/>
+						</li>
 					</ul>
 				</nav>
-			</aside>
+			</section>
 		</div>
 	</main>
+</BaseLayout>
 
-	<style>
-		@import "../styles/media-queries.css";
+<style>
+	section {
+		margin-bottom: var(--space-l);
+	}
+	.main-container {
+		max-width: 72rem;
+		margin-inline: auto;
+	}
+	.article-container {
+		gap: var(--space-s);
+		padding-bottom: var(--space-xl);
+		display: grid;
+		grid-template-columns: auto auto auto auto;
+		li {
+		}
+		.see-more-button {
+			height: 100%;
+			width: 5rem;
+			border: 1px solid var(--color-neutral-300);
+			border-radius: var(--border-radius-m);
+			div {
+				height: 100%;
+				width: 100%;
+				display: flex;
+				justify-content: center;
+				align-items: center;
+			}
+		}
+	}
+	.cards-section-container {
+		& h2 {
+			padding-bottom: var(--space-s);
+		}
+	}
+	.bottom-nav-container ul {
+		display: flex;
+		justify-content: center;
+		gap: var(--space-s);
+		flex-wrap: wrap;
+		margin-bottom: var(--space-2xl);
+		
+	}
 
-		.all-content-container {
+	.featured-article {
+		--_yoffset: -38px;
+
+		padding-bottom: var(--space-l);
+		margin-bottom: var(--space-xl);
+		border-radius: var(--border-radius-m);
+		background-color: var(--color-neutral-800);
+		max-width: 54rem;
+		margin-inline: auto;
+		h2 {
+			padding-bottom: var(--space-s);
+			color: var(--color-neutral-400);
+			font-size: var(--font-size-small);
+			font-weight: var(--font-weight-normal);
+			padding-top: 5px;
+		}
+		.game-hero {
+			object-fit: cover;
+			width: 100%;
+			height: auto;
+			max-height: 250px;
+		}
+		.featured-article-header-container {
+			transform: translateY(var(--_yoffset));
+			margin-bottom: var(--_yoffset);
+			max-width: min(100%, 460px);
+			margin-inline: var(--space-m);
+			.game-header {
+				border-radius: var(--border-radius-m);
+				object-fit: cover;
+				aspect-ratio: 2 / 1;
+				width: auto;
+				height: auto;
+			}
+		}
+		.featured-article-main-content {
 			display: flex;
 			flex-direction: column;
-			justify-content: center;
-			gap: var(--space-xl);
-		}
-		.main-content-container {
-			max-width: 950px;
-			h2 {
-				padding-bottom: var(--space-m);
-			}
-		}
-
-		.featured-article {
-			--_yoffset: -38px;
-
-			padding-bottom: var(--space-l);
-			margin-bottom: var(--space-xl);
-			border-radius: var(--border-radius-m);
-			background-color: var(--color-neutral-800);
-			h2 {
-				padding-bottom: var(--space-s);
-				color: var(--color-neutral-400);
-				font-size: var(--font-size-small);
-				font-weight: var(--font-weight-normal);
-				padding-top: 5px;
-			}
-			.game-hero {
-				object-fit: cover;
-				width: 100%;
-				height: auto;
-				max-height: 250px;
-			}
-			.featured-article-header-container {
-				transform: translateY(var(--_yoffset));
-				margin-bottom: var(--_yoffset);
-				max-width: min(100%, 460px);
-				margin-inline: var(--space-m);
-				.game-header {
-					border-radius: var(--border-radius-m);
-					object-fit: cover;
-					aspect-ratio: 2 / 1;
-					width: auto;
-					height: auto;
-				}
-			}
-			.featured-article-main-content {
-				display: flex;
-				flex-direction: column;
-				justify-content: space-between;
-				align-items: center;
-				h3 {
-					padding-bottom: 0.125em;
-				}
-			}
-			.featured-article-text {
-				max-width: min(100%, 460px);
-				margin-top: var(--space-s);
-				padding-inline: var(--space-s);
-				p:last-of-type {
-					padding-bottom: var(--space-s);
-				}
-			}
-		}
-
-		.article-container {
-			gap: var(--space-s);
-			padding-bottom: var(--space-xl);
-			display: grid;
-			grid-template-columns: auto auto auto;
-			li {
-			}
-			.see-more-button {
-				height: 100%;
-				width: 5rem;
-				border: 1px solid var(--color-neutral-300);
-				border-radius: var(--border-radius-m);
-				div {
-					height: 100%;
-					width: 100%;
-					display: flex;
-					justify-content: center;
-					align-items: center;
-				}
-			}
-		}
-
-		.aside-container {
-			display: flex;
-			flex-direction: row;
-			flex-wrap: wrap;
-			justify-content: center;
-			gap: var(--space-xl);
-		}
-		.aside-navigation-container {
-			height: fit-content;
-			background-color: var(--color-neutral-800);
-			padding: var(--space-l) var(--space-xl);
-			border-radius: var(--border-radius-m);
-			h2 {
-				font-size: var(--font-size-large);
-				padding-bottom: var(--space-s);
-				margin-bottom: var(--space-l);
-				border-bottom: 1px solid var(--color-neutral-600);
-			}
+			justify-content: space-between;
+			align-items: center;
 			h3 {
-				padding-bottom: var(--space-xs);
-				font-size: var(--font-size-large);
-				color: var(--color-accent-300);
-				font-weight: var(--font-weight-normal);
-			}
-			ul {
-				padding-left: var(--space-xs);
-			}
-			ul li a {
-				text-decoration: none;
-				color: var(--color-neutral-300);
-				&:hover, &:focus-within {
-					color: var(--color-neutral-100);
-				}
-			}
-			div:not(:first-of-type) {
-				margin-top: var(--space-l);
+				padding-bottom: 0.125em;
 			}
 		}
-		.aside-navigation-container div ul {
-			gap: var(--space-s);
+		.featured-article-text {
+			max-width: min(100%, 460px);
+			margin-top: var(--space-s);
+			padding-inline: var(--space-s);
+			p:last-of-type {
+				padding-bottom: var(--space-s);
+			}
 		}
-
-		.updates-container {
-			padding-inline: var(--space-l);
+	}
+	@media only screen and (max-width: 47.999rem) {
+		.article-container {
+			grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+			overflow: auto;
 			max-width: 100%;
-		}
-
-		@media (--viewport-s) {
-			.featured-article {
-				/*flex-direction: column-reverse;*/
-			}
-			.article-container {
-				grid-template-columns: minmax(160px, 1fr) minmax(160px, 1fr);
-				.see-more-button {
-					width: 100%;
-					max-width: none;
-					grid-column: 1 / -1;
-					height: 2rem;
-				}
+			& .see-more-button {
+				width: 100%;
 			}
 		}
-		@media only screen and (min-width: 48rem) {
-			.featured-article {
-				.featured-article-main-content {
-					flex-direction: row;
-				}
-				.featured-article-text {
-					margin-top: var(--space-xs);
-					margin-right: auto;
-					padding-left: 0;
-					padding-right: var(--space-s);
-				}
-			}
-		}
-
-		@media only screen and (max-width: 500px) {
-			.article-container {
-				grid-template-columns: 1fr;
-			}
-		}
-		@media only screen and (min-width: 1300px) {
-			.all-content-container {
+	}
+	@media only screen and (min-width: 48rem) {
+		.featured-article {
+			.featured-article-main-content {
 				flex-direction: row;
 			}
-			.aside-navigation-container {
-				width: 100%;
-				margin-top: var(--space-2xl);
-			}
-			.aside-container {
-				flex-direction: column;
-				justify-content: flex-start;
-				max-width: 280px;
+			.featured-article-text {
+				margin-top: var(--space-xs);
+				margin-right: auto;
+				padding-left: 0;
+				padding-right: var(--space-s);
 			}
 		}
-	</style>
-</BaseLayout>
+	}
+</style>
