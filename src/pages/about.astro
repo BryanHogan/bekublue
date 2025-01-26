@@ -5,9 +5,32 @@ import BaseLayout from "../layouts/BaseLayout.astro";
 <BaseLayout title="About" description="About page of BekuBlue.">
     <main class="height-smart-fill-screen">
         <div class="text-group flow">
-            <h1>About</h1>
-            <p>Beku.blue is a place to find the best games for you.</p>
-            <p>Good game design is hard.</p>
+            <h1 class="text-align-center">About</h1>
+            <p>Beku.blue focuses on game design.</p>
+            <p>
+                Games are wonderful and interesting. Games can be used for a lot
+                of things, to challenge ourselves, to grow intellectually, to
+                tell captivating stories and much more. Games and gamification
+                elements have entered our daily lives everywhere.
+            </p>
+            <p>
+                There's an interesting sub-topic of games, video games. Video
+                games and their design is what I want to focus on in this blog.
+            </p>
+            <p>
+                I'm not interested in the latest meaningless trends and hypes,
+                but rather meaningful experiences and an understanding of the
+                world and what makes great digital experiences.
+            </p>
+            <p>
+                Games are a unique medium, and a valuable one. The potential of
+                gamification is great.
+            </p>
+            <p>
+                Games can be a great tool, for socialising, meeting new people
+                and creating deeper bonds with people we are already close with,
+                or learning new languages and expanding our mental horizon.
+            </p>
         </div>
     </main>
 </BaseLayout>
@@ -18,8 +41,10 @@ import BaseLayout from "../layouts/BaseLayout.astro";
         justify-content: center;
         align-items: center;
     }
-    .text-group * {
+    .text-group p {
         margin-inline: auto;
-        text-align: center;
+        text-align: left;
+        max-width: var(--main-content-max-width);
+        padding-inline: var(--side-gap-padding);
     }
 </style>
