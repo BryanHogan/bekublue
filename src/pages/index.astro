@@ -48,7 +48,7 @@ const chronologicallySortedAll = [...allEntries].sort(
 					<div class="featured-article-text">
 						<h2 class="">Featured Article</h2>
 						<h3>{featuredArticle.data.title}</h3>
-						<p>{featuredArticle.data.description}</p>
+						<p style="padding-bottom: var(--space-s)">{featuredArticle.data.description}</p>
 						<AButton
 							title="Read more"
 							href={`/${featuredArticle.collection === "reviews" ? "games" : featuredArticle.collection === "posts" ? "blog" : ""}/${featuredArticle.slug}`}
@@ -253,9 +253,6 @@ const chronologicallySortedAll = [...allEntries].sort(
 			max-width: min(100%, 460px);
 			margin-top: var(--space-s);
 			padding-inline: var(--space-s);
-			p:last-of-type {
-				padding-bottom: var(--space-s);
-			}
 		}
 	}
 	@media only screen and (max-width: 47.999rem) {

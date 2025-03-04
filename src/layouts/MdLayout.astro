@@ -141,7 +141,6 @@ const allPosts = [...blogPosts, ...reviewPosts].sort(
 											borderColor="var(--color-neutral-500)"
 										/>
 									) : (
-									// @ts-ignore
 									<GameCard
 										title={post.data.title}
 										description={post.data.description}
@@ -265,8 +264,7 @@ const allPosts = [...blogPosts, ...reviewPosts].sort(
 		justify-content: center;
 		gap: var(--space-l);
 		height: fit-content;
-		> div {
-			height: 10px;
+		>div {
 		}
 		ul li {
 			max-width: 300px;
@@ -283,21 +281,6 @@ const allPosts = [...blogPosts, ...reviewPosts].sort(
 		padding-inline: var(--space-s);
 		padding-block: var(--space-s);
 		gap: var(--space-s);
-	}
-
-	.store-links-container {
-		display: flex;
-		flex-direction: row;
-		gap: var(--space-m);
-		a {
-			background-color: var(--color-neutral-800);
-			flex-grow: 1;
-			display: flex;
-			justify-content: center;
-			padding-block: var(--space-m);
-			border-radius: var(--border-radius-m);
-
-		}
 	}
 
 	.embeddable-buttondown-form {
