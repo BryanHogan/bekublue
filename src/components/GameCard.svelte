@@ -25,7 +25,7 @@
   
     article {
       border-radius: var(--border-radius-m);
-      border: 1px solid var(--color-neutral-500);
+      border: 1px solid var(--color-neutral-700);
       height: 100%;
       max-width: 500px;
   
@@ -40,6 +40,7 @@
       & a:hover,
       a:focus-within {
         opacity: 0.9;
+        
       }
     }
     .text-group {

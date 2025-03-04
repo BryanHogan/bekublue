@@ -1,7 +1,7 @@
 module.exports = {
   plugins: [
     require('postcss-preset-env')({
-      stage: 1,
+      stage: 3,
       features: {
         'custom-properties': false,
         'focus-within-pseudo-class': false,

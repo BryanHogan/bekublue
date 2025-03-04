@@ -39,7 +39,6 @@ import Icon from "./Icon.astro";
                 <ul role="list">
                     <li><a href="#">Game Reviews</a></li>
                     <li><a href="/about">Blog</a></li>
-                    <!--<li><a href="#">Design</a></li>-->
                     <li><a href="/about">About</a></li>
                 </ul>
             </nav>
@@ -47,17 +46,7 @@ import Icon from "./Icon.astro";
     </div>
 </div>
 
-<style is:global>
-
-    /* Should I add locally scoped variables here?
-    - Font weight of a
-    - Color of a
-    - Color of a hover
-
-    This is being used globally, make sure I use specific styling
-    - Add animation
-    */
-
+<style>
     .logo {
         margin-left: 0.25rem;
     }
@@ -108,7 +97,7 @@ import Icon from "./Icon.astro";
             font-weight: var(--font-weight-semi-bold);
             &:hover,
             &:focus-within {
-                color: var(--color-accent-200); /* this color does not exist*/
+                color: var(--color-accent-200);
             }
         }
     }
@@ -116,7 +105,7 @@ import Icon from "./Icon.astro";
         display: none;
     }
 
-    @media (--viewport-s) {
+    @media only screen and (max-width: 47.999rem) {
         .primary-navigation ul {
             display: none;
         }
@@ -129,7 +118,7 @@ import Icon from "./Icon.astro";
             padding: 0.5rem 0 0.5rem 0.5rem;
             border: 0;
             cursor: pointer;
-            & .close-icon {
+            .close-icon {
                 display: none;
             }
         }

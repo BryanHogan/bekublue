@@ -6,7 +6,7 @@ interface Props {
     cover: any;
     borderColor?: string;
 }
-const { title, description, link, cover, borderColor = "var(--color-neutral-500)" } = Astro.props;
+const { title, description, link, cover, borderColor = "var(--color-neutral-700)" } = Astro.props;
 
 import { Image } from "astro:assets";
 ---
@@ -26,14 +26,13 @@ import { Image } from "astro:assets";
     a * {
         text-decoration: none;
         color: inherit;
-        transition: var(--transition-normal) opacity;
     }
 
     article {
         border-radius: var(--border-radius-m);
         border: 1px solid var(--border-color);
         height: 100%;
-        background-color: var(--color-neutral-800);
+        transition: border var(--transition-fast);
 
         & .game-header {
             overflow: hidden;
@@ -43,8 +42,8 @@ import { Image } from "astro:assets";
             height: auto;
             aspect-ratio: 2 / 1;
         }
-        & a:hover,a:focus-within {
-            opacity: 0.9;
+        &:hover {
+            border: 1px solid var(--color-accent-700);
             
         }
     }
