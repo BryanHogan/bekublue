@@ -182,6 +182,10 @@ const chronologicallySortedAll = [...allEntries].sort(
 			width: 5rem;
 			border: 2px solid var(--color-neutral-700);
 			border-radius: var(--border-radius-m);
+			transition: border var(--transition-normal);
+			&:hover {
+				border: 2px solid var(--color-accent-700);
+			}
 			div {
 				height: 100%;
 				width: 100%;
