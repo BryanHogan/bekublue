@@ -7,15 +7,19 @@
 </script>
 
 <form class="form-container margin-inline-auto">
-    <h2 style="font-size: var(--text-size-2xl)">Filter</h2>
-    <label>
-        <input type="checkbox" bind:checked={showBlogPosts} />
-        Show Blog Posts
-    </label>
-    <label>
-        <input type="checkbox" bind:checked={showReviews} />
-        Show Review
-    </label>
+    <h2 style="font-size: var(--text-size-2xl)">
+        Filter
+    </h2>
+    <div class="option-controls-container">
+        <label>
+            <input type="checkbox" bind:checked={showBlogPosts} />
+            Show Blog Posts
+        </label>
+        <label>
+            <input type="checkbox" bind:checked={showReviews} />
+            Show Review
+        </label>
+    </div>
 </form>
 <div class="cards-container">
     {#each allEntries as entry}
@@ -33,7 +37,7 @@
 <style>
     .form-container {
         max-width: 500px;
-        border: 1px solid var(--color-neutral-400);
+        border: 1px solid var(--color-neutral-700);
         margin-block: var(--space-xl);
         padding: var(--space-m);
         display: flex;
@@ -46,5 +50,18 @@
         display: grid;
         grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
         gap: var(--space-m);
+    }
+    .option-controls-container {
+        display: flex;
+        flex-direction: row;
+        flex-wrap: wrap;
+        
+        gap: var(--space-s);
+    }
+    label {
+        border: 1px solid var(--color-neutral-700);
+        padding: var(--space-2xs) var(--space-xs);
+        border-radius: var(--border-radius-s);
+        background-color: var(--color-neutral-900);
     }
 </style>

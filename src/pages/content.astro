@@ -12,7 +12,7 @@ const allEntries = [...reviews, ...posts].sort(
 <BaseLayout title="All posts & reviews" description="View all content available on Beku.blue.">
     <main class="height-smart-fill-screen base-layout margin-inline-auto">
         <h1 class="visually-hidden">All blog posts and game reviews on beku.blue</h1>
-        <div>
+        <div style="padding-bottom: var(--space-xl);">
             <ContentOverview client:load {allEntries}/>
         </div>
 
