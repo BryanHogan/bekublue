@@ -224,7 +224,7 @@ const allPosts = [...blogPosts, ...reviewPosts].sort(
 	.hero-image {
 		width: 100%;
 		height: auto;
-		max-height: 350px;
+		max-height: min(350px, 50svh);
 		min-height: 120px;
 		object-fit: cover;
 		filter: grayscale(40%);

@@ -229,7 +229,7 @@ const chronologicallySortedAll = [...allEntries].sort(
 			object-fit: cover;
 			width: 100%;
 			height: auto;
-			max-height: 250px;
+			max-height: 50svh;
 		}
 		.featured-article-header-container {
 			transform: translateY(var(--_yoffset));
@@ -259,7 +259,7 @@ const chronologicallySortedAll = [...allEntries].sort(
 			padding-inline: var(--space-s);
 		}
 	}
-	@media only screen and (max-width: 47.999rem) {
+	@media only screen and (max-width: 37.999rem) {
 		.article-container {
 			grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
 			overflow: auto;
@@ -269,7 +269,7 @@ const chronologicallySortedAll = [...allEntries].sort(
 			}
 		}
 	}
-	@media only screen and (min-width: 48rem) {
+	@media only screen and (min-width: 38rem) {
 		.featured-article {
 			.featured-article-main-content {
 				flex-direction: row;
