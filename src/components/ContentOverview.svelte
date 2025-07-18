@@ -28,7 +28,7 @@
         </label>
         <label>
             <input type="checkbox" bind:checked={showReviews} />
-            Show Review
+            Show Reviews
         </label>
     </div>
 </form>
