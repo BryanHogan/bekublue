@@ -1,15 +1,26 @@
 <script>
+    import { onMount } from "svelte";
     import GameCard from "../components/GameCard.svelte";
     export let allEntries = [];
 
     let showBlogPosts = true;
     let showReviews = true;
+
+    onMount(() => {
+        const params = new URLSearchParams(location.search);
+        const hasReviews = params.has("reviews");
+        const hasBlog = params.has("blog");
+
+        if (hasReviews && !hasBlog) {
+            showBlogPosts = false;
+        } else if (hasBlog && !hasReviews) {
+            showReviews = false;
+        }
+    });
 </script>
 
 <form class="form-container margin-inline-auto">
-    <h2 style="font-size: var(--text-size-2xl)">
-        Filter
-    </h2>
+    <h2 style="font-size: var(--text-size-2xl)">Filter</h2>
     <div class="option-controls-container">
         <label>
             <input type="checkbox" bind:checked={showBlogPosts} />
@@ -55,7 +66,7 @@
         display: flex;
         flex-direction: row;
         flex-wrap: wrap;
-        
+
         gap: var(--space-s);
     }
     label {
