@@ -37,6 +37,11 @@ const allPosts = [...blogPosts, ...reviewPosts].sort(
 	(a, b) => b.data.pubDate.getTime() - a.data.pubDate.getTime(),
 );
 
+let tags = [];
+if (post.data.tags) {
+	tags = post.data.tags;
+}
+
 ---
 
 <BaseLayout title={post.data.title} description={post.data.description}>
@@ -45,7 +50,9 @@ const allPosts = [...blogPosts, ...reviewPosts].sort(
 			<div class="post-container-left-middle">
 				<aside class="aside-container-left">
 					<SideCard title="Tags">
-						<p>Indie, Action, 2024, Pixel-style</p>
+						<p style="text-transform: capitalize;">
+  							{post.data.tags?.join(', ')}
+						</p>
 					</SideCard>
 					<div class="toc">
 						<div class="sticky-element">
