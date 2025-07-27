@@ -427,56 +427,63 @@ if (post.data.tags) {
 
 <script>
 	function setupStickyToc() {
-		const stickyElement = document.querySelector(
-			".sticky-element",
-		) as HTMLElement;
-		const asideContainer = document.querySelector(".aside-container-left");
+	const stickyElement = document.querySelector(".sticky-element") as HTMLElement;
+	const asideContainer = document.querySelector(".aside-container-left") as HTMLElement;
 
-		if (stickyElement && asideContainer) {
-			const updateWidth = () => {
-				const asideWidth = asideContainer.getBoundingClientRect().width;
-				stickyElement.style.setProperty(
-					"--aside-width",
-					`${asideWidth}px`,
-				);
-			};
+	if (stickyElement && asideContainer) {
+		const updateWidth = () => {
+			const asideWidth = asideContainer.getBoundingClientRect().width;
+			stickyElement.style.setProperty("--aside-width", `${asideWidth}px`);
+		};
 
-			const updateOffset = () => {
-				return stickyElement.offsetTop;
-			};
+		const updateOffset = () => {
+			return stickyElement.offsetTop;
+		};
 
-			let stickyOffset = updateOffset();
+		let stickyOffset = updateOffset();
 
-			const handleScroll = () => {
-				if (!stickyElement.classList.contains("fixed")) {
-					stickyOffset = updateOffset();
-				}
-
-				if (window.scrollY >= stickyOffset - 50) {
-					stickyElement.classList.add("fixed");
-				} else {
-					stickyElement.classList.remove("fixed");
-				}
-			};
-
-			const handleResize = () => {
-				stickyElement.classList.remove("fixed");
-				updateWidth();
+		const handleScroll = () => {
+			if (!stickyElement.classList.contains("fixed")) {
 				stickyOffset = updateOffset();
-				handleScroll();
-			};
+			}
 
+			if (window.scrollY >= stickyOffset - 50) {
+				if (!stickyElement.classList.contains("fixed")) {
+					const currentWidth = asideContainer.getBoundingClientRect().width;
+					asideContainer.style.minWidth = `${currentWidth}px`;
+				}
+				stickyElement.classList.add("fixed");
+			} else {
+				stickyElement.classList.remove("fixed");
+				asideContainer.style.minWidth = "";
+			}
+		};
+
+		const handleResize = () => {
+			const wasFixed = stickyElement.classList.contains("fixed");
+			stickyElement.classList.remove("fixed");
+			asideContainer.style.minWidth = "";
+			
 			updateWidth();
+			stickyOffset = updateOffset();
+			
+			if (wasFixed) {
+				handleScroll();
+			}
+		};
 
-			window.addEventListener("scroll", handleScroll);
-			window.addEventListener("resize", handleResize);
+		updateWidth();
 
-			return () => {
-				window.removeEventListener("scroll", handleScroll);
-				window.removeEventListener("resize", handleResize);
-			};
-		}
+		window.addEventListener("scroll", handleScroll);
+		window.addEventListener("resize", handleResize);
+
+		return () => {
+			window.removeEventListener("scroll", handleScroll);
+			window.removeEventListener("resize", handleResize);
+		};
 	}
+}
+
 
 	setupStickyToc();
 
